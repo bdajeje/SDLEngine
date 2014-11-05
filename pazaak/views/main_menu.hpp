@@ -1,13 +1,17 @@
 #ifndef MAIN_MENU_HPP
 #define MAIN_MENU_HPP
 
-#include "view.hpp"
+#include "graphics/view.hpp"
 
-class MainMenu final : public View
+namespace view {
+
+class MainMenu final : public graphics::View
 {
   public:
 
     MainMenu();
 };
+
+}
 
 #endif // MAIN_MENU_HPP

@@ -4,7 +4,7 @@
 
 Pazaak::Pazaak()
 {
-  m_main_menu = std::make_shared<MainMenu>();
+  m_main_menu = std::make_shared<view::MainMenu>();
 
   setCurrentView(m_main_menu);
 }

@@ -4,23 +4,23 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    window.cpp \
-    game.cpp \
+    graphics/window.cpp \
+    game/game.cpp \
     pazaak/pazaak.cpp \
-    view.cpp \
+    graphics/view.cpp \
     pazaak/views/main_menu.cpp \
-    drawable.cpp
+    graphics/drawable.cpp
 
 LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 QMAKE_CXXFLAGS += -std=c++11
 
 HEADERS += \
-    window.hpp \
+    graphics/window.hpp \
     defines.hpp \
-    game.hpp \
+    game/game.hpp \
     pazaak/pazaak.hpp \
-    view.hpp \
+    graphics/view.hpp \
     pazaak/surfaces.hpp \
     pazaak/views/main_menu.hpp \
-    drawable.hpp
+    graphics/drawable.hpp

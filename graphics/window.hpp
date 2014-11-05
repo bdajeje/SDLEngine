@@ -7,7 +7,9 @@
 #include <memory>
 
 #include "defines.hpp"
-#include "game.hpp"
+#include "game/game.hpp"
+
+namespace graphics {
 
 class Window final
 {
@@ -28,5 +30,7 @@ class Window final
     static SDL_Window* s_window;
     static SDL_Surface* s_screen;
 };
+
+}
 
 #endif // PAZAAK_WINDOW_HPP

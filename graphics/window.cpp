@@ -4,6 +4,8 @@
 
 #include "utils/logging/easylogging++.h"
 
+namespace graphics {
+
 SDL_Window* Window::s_window;
 SDL_Surface* Window::s_screen;
 
@@ -76,3 +78,4 @@ bool Window::run(std::shared_ptr<Game> game)
   return success;
 }
 
+}

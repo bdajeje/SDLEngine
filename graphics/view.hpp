@@ -10,6 +10,8 @@
 
 #include "drawable.hpp"
 
+namespace graphics {
+
 class View
 {
   public:
@@ -34,5 +36,7 @@ class View
 };
 
 typedef std::shared_ptr<View> ViewPtr;
+
+}
 
 #endif // VIEW_HPP

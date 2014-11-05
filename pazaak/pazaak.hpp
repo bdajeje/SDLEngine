@@ -1,9 +1,11 @@
 #ifndef PAZAAK_HPP
 #define PAZAAK_HPP
 
-#include "game.hpp"
+#include "game/game.hpp"
 
-class MainMenu;
+namespace view {
+  class MainMenu;
+}
 
 class Pazaak final: public Game
 {
@@ -13,7 +15,7 @@ class Pazaak final: public Game
 
   private:
 
-    std::shared_ptr<MainMenu> m_main_menu;
+    std::shared_ptr<view::MainMenu> m_main_menu;
 };
 
 #endif // PAZAAK_HPP

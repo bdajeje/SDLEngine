@@ -3,6 +3,8 @@
 
 #include "SDL2/SDL_image.h"
 
+namespace graphics {
+
 class Drawable
 {
   public:
@@ -15,5 +17,7 @@ class Drawable
 
     SDL_Surface* m_surface;
 };
+
+}
 
 #endif // DRAWABLE_HPP

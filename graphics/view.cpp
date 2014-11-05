@@ -6,6 +6,8 @@
 #include "utils/logging/easylogging++.h"
 #include "window.hpp"
 
+namespace graphics {
+
 View::View()
 {
 }
@@ -66,4 +68,6 @@ SDL_Surface* View::loadSurface( const std::string& path )
   m_surfaces[path] = optimized_surface;
 
   return optimized_surface;
+}
+
 }

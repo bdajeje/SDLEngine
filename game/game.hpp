@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL_image.h>
 
-#include "view.hpp"
+#include "graphics/view.hpp"
 
 class Game
 {
@@ -13,11 +13,11 @@ class Game
 
     void draw();
 
-    void setCurrentView(ViewPtr view) { m_current_view = view; }
+    void setCurrentView(graphics::ViewPtr view) { m_current_view = view; }
 
   private:
 
-    ViewPtr m_current_view;
+    graphics::ViewPtr m_current_view;
 };
 
 #endif // GAME_HPP
