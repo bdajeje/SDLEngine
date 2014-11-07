@@ -5,12 +5,13 @@
 
 #include "graphics/view.hpp"
 #include "graphics/window.hpp"
+#include "utils/configuration/configuration.hpp"
 
 class Game
 {
   public:
 
-    Game(const std::string& title, int width, int height);
+    Game(const utils::Configuration& configs, const std::string& title, int width, int height);
 
     void run();
 
@@ -22,6 +23,7 @@ class Game
 
   private:
 
+    utils::Configuration m_configurations;
     graphics::Window m_window;
     graphics::ViewPtr m_current_view;
 };

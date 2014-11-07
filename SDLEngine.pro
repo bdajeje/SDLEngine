@@ -11,9 +11,11 @@ SOURCES += main.cpp \
     pazaak/views/main_menu.cpp \
     graphics/drawable.cpp \
     graphics/manager/texture_manager.cpp \
-    utils/arguments/arguments.cpp
+    utils/arguments/arguments.cpp \
+    utils/configuration/configuration.cpp \
+    utils/files.cpp
 
-LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lboost_filesystem -lboost_system
 
 QMAKE_CXXFLAGS += -std=c++11
 
@@ -29,4 +31,6 @@ HEADERS += \
     graphics/manager/texture_manager.hpp \
     utils/arguments/arguments.hpp \
     graphics/position.hpp \
-    graphics/size.hpp
+    graphics/size.hpp \
+    utils/configuration/configuration.hpp \
+    utils/files.hpp

@@ -11,7 +11,7 @@ class Pazaak final : public Game
 {
   public:
 
-    Pazaak(int width, int height);
+    Pazaak(const utils::Configuration& configs, int width, int height);
 
   private:
 

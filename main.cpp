@@ -3,6 +3,7 @@
 #include "graphics/manager/texture_manager.hpp"
 #include "pazaak/pazaak.hpp"
 #include "utils/arguments/arguments.hpp"
+#include "utils/configuration/configuration.hpp"
 #include "utils/logging/easylogging++.h"
 
 _INITIALIZE_EASYLOGGINGPP
@@ -17,10 +18,13 @@ int main( int argc, char* argv[] )
   graphics::TextureManager::init("resources/images/");
 
   // Parse args
-  auto args = utils::Arguments(argc, argv);
+  auto args = utils::Arguments{argc, argv};
+
+  // Read configurations
+  auto configs = utils::Configuration{"resources/configurations/", {"sounds"} };
 
   // Start game
-  auto pazaak = std::make_shared<Pazaak>(args.get(WINDOW_WIDTH, 800), args.get(WINDOW_HEIGHT, 600));
+  auto pazaak = std::make_shared<Pazaak>(configs, args.get(WINDOW_WIDTH, 800), args.get(WINDOW_HEIGHT, 600));
   pazaak->run();
 
   // Quit

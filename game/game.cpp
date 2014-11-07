@@ -2,8 +2,9 @@
 
 #include "utils/logging/easylogging++.h"
 
-Game::Game(const std::string& title, int width, int height)
-  : m_window(title, width, height)
+Game::Game(const utils::Configuration& configs, const std::string& title, int width, int height)
+  : m_configurations(configs)
+  , m_window(title, width, height)
 {}
 
 void Game::run()
