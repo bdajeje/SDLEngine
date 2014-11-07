@@ -23,7 +23,7 @@ Window::Window(const std::string& title, int width, int height)
   }
 
   // Create renderer
-  m_renderer = SDL_CreateRenderer( m_window, -1, SDL_RENDERER_ACCELERATED );
+  m_renderer = SDL_CreateRenderer( m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ); // SDL_RENDERER_PRESENTVSYNC (vertical sync) caps framerate on monitor
   if( m_renderer == NULL )
   {
     LOG(ERROR) << "Renderer could not be created! SDL_Error: " << SDL_GetError() << "\n";
@@ -56,6 +56,12 @@ void Window::clear()
 
 void Window::render( graphics::ViewPtr view )
 {
+  if(!view)
+  {
+    LOG(ERROR) << "Can't render a NULL view!";
+    return;
+  }
+
   view->render( m_renderer );
   SDL_RenderPresent( m_renderer );
 }

@@ -23,11 +23,14 @@ class View
   protected:
 
     void addObject(std::shared_ptr<Drawable>& drawable);
+    void addAnimation(std::shared_ptr<Animation>& animation);
+    void newFrame();
 
   private:
 
     SDL_Rect m_destination;
     std::vector<std::shared_ptr<Drawable>> m_objects;
+    std::vector<std::shared_ptr<Drawable>> m_animations;
 };
 
 typedef std::shared_ptr<View> ViewPtr;

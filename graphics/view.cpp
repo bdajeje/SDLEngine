@@ -11,6 +11,8 @@ View::View(const Position& position, const Size& size)
 
 void View::render(SDL_Renderer* renderer)
 {
+  newFrame();
+
   SDL_RenderSetViewport(renderer, &m_destination);
 
   // Draw all elements of the view
@@ -27,6 +29,26 @@ void View::addObject(std::shared_ptr<Drawable>& drawable)
   }
 
   m_objects.push_back(drawable);
+}
+
+void View::addAnimation(std::shared_ptr<Animation>& animation)
+{
+  if(!animation)
+  {
+    LOG(ERROR) << "Trying to add a null animation to the view";
+    return;
+  }
+
+  m_animations.push_back(animation);
+
+  // Also add the animation to the drawable list to be drawn
+  addObject(animation);
+}
+
+void View::newFrame()
+{
+  for( auto& animation : m_animations )
+    animation->newFrame();
 }
 
 }

@@ -20,15 +20,12 @@ void Game::run()
       // User requests quit
       if( event.type == SDL_QUIT )
         quit = true;
-
-      // Clear screen
-      m_window.clear();
-
-      // Update screen
-      if(m_current_view)
-        m_window.render( m_current_view );
-      else
-        LOG(ERROR) << "Game with no current view!";
     }
+
+    // Clear screen
+    m_window.clear();
+
+    // Update screen
+    m_window.render( m_current_view );
   }
 }

@@ -13,7 +13,9 @@ SOURCES += main.cpp \
     graphics/manager/texture_manager.cpp \
     utils/arguments/arguments.cpp \
     utils/configuration/configuration.cpp \
-    utils/files.cpp
+    utils/files.cpp \
+    graphics/animation.cpp \
+    graphics/image.cpp
 
 LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lboost_filesystem -lboost_system
 
@@ -33,4 +35,6 @@ HEADERS += \
     graphics/position.hpp \
     graphics/size.hpp \
     utils/configuration/configuration.hpp \
-    utils/files.hpp
+    utils/files.hpp \
+    graphics/animation.hpp \
+    graphics/image.hpp

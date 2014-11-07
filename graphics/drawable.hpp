@@ -12,14 +12,13 @@ class Drawable
 {
   public:
 
-    Drawable(SDL_Texture* texture, const Position& position, const Size& size);
+    Drawable(const Position& position, const Size& size);
 
-    void draw(SDL_Renderer* renderer);
+    virtual void draw(SDL_Renderer* renderer) = 0;
 
   private:
 
     SDL_Rect m_destination;
-    SDL_Texture* m_texture;
 };
 
 }
