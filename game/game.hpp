@@ -9,9 +9,9 @@ class Game
 {
   public:
 
-    Game();
+    Game() = default;
 
-    void draw();
+    void draw(SDL_Renderer* renderer);
 
     void setCurrentView(graphics::ViewPtr view) { m_current_view = view; }
 

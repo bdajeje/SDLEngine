@@ -3,8 +3,7 @@
 
 #include <string>
 
-static const std::string Resources_folder { "resources/" };
-static const std::string Images_folder { "images/" };
+const std::string TEXTURE_PATH {"resources/images/"};
 
 struct Size
 {

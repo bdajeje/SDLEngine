@@ -9,13 +9,13 @@ class Drawable
 {
   public:
 
-    Drawable(SDL_Surface* surface);
+    Drawable(SDL_Texture* texture);
 
-    void draw();
+    void draw(SDL_Renderer* renderer);
 
   private:
 
-    SDL_Surface* m_surface;
+    SDL_Texture* m_texture;
 };
 
 }

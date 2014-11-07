@@ -1,9 +1,9 @@
-#ifndef SURFACES_HPP
-#define SURFACES_HPP
+#ifndef PAZAAK_TEXTURES_HPP
+#define PAZAAK_TEXTURES_HPP
 
 #include <string>
 
-namespace surface {
+namespace texture {
 
   namespace main_menu {
     static const std::string Background {"main_menu/background.png"};
@@ -11,4 +11,4 @@ namespace surface {
 
 }
 
-#endif // SURFACES_HPP
+#endif // PAZAAK_TEXTURES_HPP

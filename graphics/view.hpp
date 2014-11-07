@@ -6,7 +6,6 @@
 #include <map>
 #include <memory>
 #include <vector>
-#include <string>
 
 #include "drawable.hpp"
 
@@ -16,22 +15,21 @@ class View
 {
   public:
 
-    View();
-    ~View();
+    View() = default;
+    virtual ~View();
 
-    void draw();
+    void draw(SDL_Renderer* renderer);
 
   protected:
 
-    void addObject(std::shared_ptr<Drawable> drawable);
+    SDL_Texture* getTexture(const std::string& path);
+    SDL_Texture* loadTexture(const std::string& path);
 
-    SDL_Surface* loadSurface(const std::string& path);
+    void addObject(std::shared_ptr<Drawable> drawable);
 
   private:
 
-    // Original surface pointers are here
-    std::map<std::string, SDL_Surface*> m_surfaces;
-
+    std::map<std::string, SDL_Texture*> m_textures;
     std::vector<std::shared_ptr<Drawable>> m_objects;
 };
 

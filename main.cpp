@@ -9,9 +9,12 @@ _INITIALIZE_EASYLOGGINGPP
 
 int main( /*int argc, char* args[]*/ )
 {
-  graphics::Window::init("Pazaak", 800, 600);
-  graphics::Window::run( std::make_shared<Pazaak>() );
+  // \todo window size from args
 
+  auto window = graphics::Window("Pazaak", 800, 600);
+  window.run( std::make_shared<Pazaak>() );
+
+  IMG_Quit();
   SDL_Quit();
 
   return 0;

@@ -21,6 +21,6 @@ HEADERS += \
     game/game.hpp \
     pazaak/pazaak.hpp \
     graphics/view.hpp \
-    pazaak/surfaces.hpp \
     pazaak/views/main_menu.hpp \
-    graphics/drawable.hpp
+    graphics/drawable.hpp \
+    pazaak/textures.hpp

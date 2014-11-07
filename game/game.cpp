@@ -2,11 +2,7 @@
 
 #include "utils/logging/easylogging++.h"
 
-Game::Game()
-{
-}
-
-void Game::draw()
+void Game::draw(SDL_Renderer* renderer)
 {
   if(!m_current_view)
   {
@@ -14,5 +10,5 @@ void Game::draw()
     return;
   }
 
-  m_current_view->draw();
+  m_current_view->draw(renderer);
 }
