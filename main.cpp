@@ -1,21 +1,31 @@
 #include <SDL2/SDL.h>
-#include <iostream>
 
-#include "utils/logging/easylogging++.h"
-#include "graphics/window.hpp"
+#include "graphics/manager/texture_manager.hpp"
 #include "pazaak/pazaak.hpp"
+#include "utils/arguments/arguments.hpp"
+#include "utils/logging/easylogging++.h"
 
 _INITIALIZE_EASYLOGGINGPP
 
-int main( /*int argc, char* args[]*/ )
+enum Argument : short {
+  WINDOW_WIDTH = 1, WINDOW_HEIGHT
+};
+
+int main( int argc, char* argv[] )
 {
-  // \todo window size from args
+  // Mandatory init
+  graphics::TextureManager::init("resources/images/");
 
-  auto window = graphics::Window("Pazaak", 800, 600);
-  window.run( std::make_shared<Pazaak>() );
+  // Parse args
+  auto args = utils::Arguments(argc, argv);
 
+  // Start game
+  auto pazaak = std::make_shared<Pazaak>(args.get(WINDOW_WIDTH, 800), args.get(WINDOW_HEIGHT, 600));
+  pazaak->run();
+
+  // Quit
   IMG_Quit();
   SDL_Quit();
 
-  return 0;
+  return EXIT_SUCCESS;
 }

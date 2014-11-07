@@ -7,11 +7,11 @@ namespace view {
   class MainMenu;
 }
 
-class Pazaak final: public Game
+class Pazaak final : public Game
 {
   public:
 
-    Pazaak();
+    Pazaak(int width, int height);
 
   private:
 

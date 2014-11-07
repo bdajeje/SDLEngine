@@ -9,7 +9,9 @@ SOURCES += main.cpp \
     pazaak/pazaak.cpp \
     graphics/view.cpp \
     pazaak/views/main_menu.cpp \
-    graphics/drawable.cpp
+    graphics/drawable.cpp \
+    graphics/manager/texture_manager.cpp \
+    utils/arguments/arguments.cpp
 
 LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
@@ -23,4 +25,8 @@ HEADERS += \
     graphics/view.hpp \
     pazaak/views/main_menu.hpp \
     graphics/drawable.hpp \
-    pazaak/textures.hpp
+    pazaak/textures.hpp \
+    graphics/manager/texture_manager.hpp \
+    utils/arguments/arguments.hpp \
+    graphics/position.hpp \
+    graphics/size.hpp

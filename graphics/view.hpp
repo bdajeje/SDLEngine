@@ -1,11 +1,11 @@
 #ifndef VIEW_HPP
 #define VIEW_HPP
 
-#include <SDL2/SDL.h>
-
 #include <map>
 #include <memory>
 #include <vector>
+
+#include <SDL2/SDL.h>
 
 #include "drawable.hpp"
 
@@ -15,21 +15,18 @@ class View
 {
   public:
 
-    View() = default;
-    virtual ~View();
+    View(const Position& position, const Size& size);
+    virtual ~View() = default;
 
-    void draw(SDL_Renderer* renderer);
+    void render(SDL_Renderer* renderer);
 
   protected:
 
-    SDL_Texture* getTexture(const std::string& path);
-    SDL_Texture* loadTexture(const std::string& path);
-
-    void addObject(std::shared_ptr<Drawable> drawable);
+    void addObject(std::shared_ptr<Drawable>& drawable);
 
   private:
 
-    std::map<std::string, SDL_Texture*> m_textures;
+    SDL_Rect m_destination;
     std::vector<std::shared_ptr<Drawable>> m_objects;
 };
 

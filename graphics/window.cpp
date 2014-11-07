@@ -1,7 +1,6 @@
 #include "window.hpp"
 
-#include <SDL2/SDL_image.h>
-
+#include "defines.hpp"
 #include "utils/logging/easylogging++.h"
 
 namespace graphics {
@@ -50,32 +49,15 @@ Window::~Window()
   SDL_DestroyWindow( m_window );
 }
 
-bool Window::run(std::shared_ptr<Game> game)
+void Window::clear()
 {
-  bool quit = false;
-  SDL_Event event;
+  SDL_RenderClear( m_renderer );
+}
 
-  // Handle events on queue
-  while( !quit )
-  {
-    while( SDL_PollEvent( &event ) != 0 )
-    {
-      // User requests quit
-      if( event.type == SDL_QUIT )
-        quit = true;
-
-      // Clear screen
-      SDL_RenderClear( m_renderer );
-
-      // Let the game draw its things
-      game->draw(m_renderer);
-
-      // Update screen
-      SDL_RenderPresent( m_renderer );
-    }
-  }
-
-  return true;
+void Window::render( graphics::ViewPtr view )
+{
+  view->render( m_renderer );
+  SDL_RenderPresent( m_renderer );
 }
 
 }

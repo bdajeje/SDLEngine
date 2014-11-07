@@ -2,13 +2,32 @@
 
 #include "utils/logging/easylogging++.h"
 
-void Game::draw(SDL_Renderer* renderer)
-{
-  if(!m_current_view)
-  {
-    LOG(ERROR) << "Game with no valid view!";
-    return;
-  }
+Game::Game(const std::string& title, int width, int height)
+  : m_window(title, width, height)
+{}
 
-  m_current_view->draw(renderer);
+void Game::run()
+{
+  bool quit = false;
+  SDL_Event event;
+
+  // Handle events on queue
+  while( !quit )
+  {
+    while( SDL_PollEvent( &event ) != 0 )
+    {
+      // User requests quit
+      if( event.type == SDL_QUIT )
+        quit = true;
+
+      // Clear screen
+      m_window.clear();
+
+      // Update screen
+      if(m_current_view)
+        m_window.render( m_current_view );
+      else
+        LOG(ERROR) << "Game with no current view!";
+    }
+  }
 }

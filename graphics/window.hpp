@@ -3,12 +3,10 @@
 
 #include <SDL2/SDL.h>
 
-#include <map>
 #include <memory>
 #include <string>
 
-#include "defines.hpp"
-#include "game/game.hpp"
+#include "graphics/view.hpp"
 
 namespace graphics {
 
@@ -19,7 +17,10 @@ class Window final
     Window(const std::string& title, int width, int height);
     ~Window();
 
-    bool run(std::shared_ptr<Game> game);
+    void clear();
+    void render(graphics::ViewPtr view);
+
+    SDL_Renderer* renderer() const { return m_renderer; }
 
   private:
 

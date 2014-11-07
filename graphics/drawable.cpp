@@ -5,10 +5,10 @@
 
 namespace graphics {
 
-Drawable::Drawable(SDL_Texture* texture)
-  : m_texture(texture)
-{
-}
+Drawable::Drawable(SDL_Texture* texture, const Position& position, const Size& size)
+  : m_destination{ position.x, position.y, size.w, size.h }
+  , m_texture{texture}
+{}
 
 void Drawable::draw(SDL_Renderer* renderer)
 {
@@ -23,7 +23,7 @@ void Drawable::draw(SDL_Renderer* renderer)
     return;
   }
 
-  SDL_RenderCopy( renderer, m_texture, NULL, NULL );
+  SDL_RenderCopy( renderer, m_texture, NULL, &m_destination );
 }
 
 }
