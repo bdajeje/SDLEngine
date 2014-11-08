@@ -1,9 +1,9 @@
-width=200
-height=200
+width=50
+height=50
 pos_x=100
 pos_y=100
 texture=main_menu/logo.png
 
-framerate=4
+framerate=8
 nbr_clips=4
 

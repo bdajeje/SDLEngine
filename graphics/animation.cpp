@@ -24,7 +24,7 @@ Animation::Animation(const utils::Configuration& info, SDL_Renderer* renderer, c
 
     m_texture_clips.reserve( nbr_clips );
     for(int i = 0; i < nbr_clips; ++i)
-      m_texture_clips.push_back( SDL_Rect{clip_width * i, m_destination.y, clip_width, texture_height} );
+      m_texture_clips.push_back( SDL_Rect{clip_width * i, 0, clip_width, texture_height} );
   }
   catch(const std::exception& e)
   {
