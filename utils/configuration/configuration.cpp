@@ -7,17 +7,13 @@
 
 namespace utils {
 
-Configuration::Configuration(const std::string& config_path, const std::vector<std::string>& files)
-  : m_config_path(config_path)
+Configuration::Configuration(std::string config_path, const std::vector<std::string>& files)
 {
-  if( m_config_path.back() != '/' )
-    m_config_path += '/';
+  if( config_path.back() != '/' )
+    config_path += '/';
 
   for( const auto& file : files )
     loadConfig( config_path + file );
-
-  for( auto conf : m_configurations )
-    LOG(DEBUG) << "'" << conf.first << "' '" << conf.second << "'";
 }
 
 void Configuration::loadConfig(const std::string& file_path)
@@ -50,6 +46,18 @@ void Configuration::loadConfig(const std::string& file_path)
     auto value = boost::algorithm::trim_copy(line.substr(pos + 1));
     m_configurations[key] = value;
   }
+}
+
+const std::string& Configuration::get(const std::string& config_key) const
+{
+  auto found = m_configurations.find(config_key);
+  if(found == m_configurations.end())
+  {
+    static const std::string error;
+    return error;
+  }
+
+  return found->second;
 }
 
 }

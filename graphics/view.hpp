@@ -7,7 +7,8 @@
 
 #include <SDL2/SDL.h>
 
-#include "drawable.hpp"
+#include "graphics/animation.hpp"
+#include "graphics/drawable.hpp"
 
 namespace graphics {
 
@@ -20,17 +21,19 @@ class View
 
     void render(SDL_Renderer* renderer);
 
+    const SDL_Rect& destination() const { return m_destination; }
+
   protected:
 
-    void addObject(std::shared_ptr<Drawable>& drawable);
-    void addAnimation(std::shared_ptr<Animation>& animation);
+    void addObject(std::shared_ptr<Drawable> drawable);
+    void addAnimation(std::shared_ptr<Animation> animation);
     void newFrame();
 
   private:
 
     SDL_Rect m_destination;
     std::vector<std::shared_ptr<Drawable>> m_objects;
-    std::vector<std::shared_ptr<Drawable>> m_animations;
+    std::vector<std::shared_ptr<Animation>> m_animations;
 };
 
 typedef std::shared_ptr<View> ViewPtr;

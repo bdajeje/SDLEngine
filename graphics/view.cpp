@@ -20,7 +20,7 @@ void View::render(SDL_Renderer* renderer)
     object->draw(renderer);
 }
 
-void View::addObject(std::shared_ptr<Drawable>& drawable)
+void View::addObject(std::shared_ptr<Drawable> drawable)
 {
   if(!drawable)
   {
@@ -31,7 +31,7 @@ void View::addObject(std::shared_ptr<Drawable>& drawable)
   m_objects.push_back(drawable);
 }
 
-void View::addAnimation(std::shared_ptr<Animation>& animation)
+void View::addAnimation(std::shared_ptr<Animation> animation)
 {
   if(!animation)
   {

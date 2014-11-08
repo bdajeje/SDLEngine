@@ -14,8 +14,7 @@ SOURCES += main.cpp \
     utils/arguments/arguments.cpp \
     utils/configuration/configuration.cpp \
     utils/files.cpp \
-    graphics/animation.cpp \
-    graphics/image.cpp
+    graphics/animation.cpp
 
 LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lboost_filesystem -lboost_system
 
@@ -36,5 +35,4 @@ HEADERS += \
     graphics/size.hpp \
     utils/configuration/configuration.hpp \
     utils/files.hpp \
-    graphics/animation.hpp \
-    graphics/image.hpp
+    graphics/animation.hpp

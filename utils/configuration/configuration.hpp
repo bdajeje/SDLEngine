@@ -11,7 +11,9 @@ class Configuration
 {
   public:
 
-    Configuration( const std::string& config_path, const std::vector<std::string>& files );
+    Configuration(std::string config_path, const std::vector<std::string>& files );
+
+    const std::string& get(const std::string& config_key) const;
 
   private:
 
@@ -19,7 +21,6 @@ class Configuration
 
   private:
 
-    std::string m_config_path;
     std::map<std::string, std::string> m_configurations;
 };
 
