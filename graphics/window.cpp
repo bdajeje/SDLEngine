@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+#include <SDL2/SDL_mixer.h>
+
 #include "defines.hpp"
 #include "utils/logging/easylogging++.h"
 
@@ -8,7 +10,7 @@ namespace graphics {
 Window::Window(const std::string& title, int width, int height)
 {
   // Initialize SDL
-  if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+  if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
   {
     LOG(ERROR) << "SDL could not initialize! SDL_Error: " << SDL_GetError() << "\n";
     throw;
@@ -38,6 +40,13 @@ Window::Window(const std::string& title, int width, int height)
   if( !( IMG_Init( imgFlags ) & imgFlags ) )
   {
     LOG(ERROR) << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << "\n";
+    throw;
+  }
+
+  // Initialize SDL_mixer
+  if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+  {
+    LOG(ERROR) << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << "\n";
     throw;
   }
 }

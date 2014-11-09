@@ -2,6 +2,7 @@
 
 #include "graphics/manager/texture_manager.hpp"
 #include "pazaak/pazaak.hpp"
+#include "sounds/sounds_manager.hpp"
 #include "utils/arguments/arguments.hpp"
 #include "utils/configuration/configuration.hpp"
 #include "utils/logging/easylogging++.h"
@@ -16,6 +17,7 @@ int main( int argc, char* argv[] )
 {
   // Mandatory init
   graphics::TextureManager::init("resources/images/");
+  sounds::SoundsManager::init("resources/musics/", "resources/sounds/");
 
   // Parse args
   auto args = utils::Arguments{argc, argv};
