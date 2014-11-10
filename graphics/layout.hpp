@@ -16,10 +16,10 @@ class Layout : public Drawable
 {
   public:
 
-    Layout(const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent);
+    Layout(const utils::Configuration& info, const SDL_Rect& parent);
     virtual ~Layout() = default;
 
-    void draw(SDL_Renderer* renderer);
+    void draw();
     void addObject(std::shared_ptr<Drawable> object);
 
     std::shared_ptr<Drawable> getObject( size_t offset ) const { return m_objects.at(offset); }

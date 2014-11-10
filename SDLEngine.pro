@@ -4,7 +4,6 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    graphics/window.cpp \
     game/game.cpp \
     pazaak/pazaak.cpp \
     graphics/view.cpp \
@@ -20,14 +19,14 @@ SOURCES += main.cpp \
     graphics/manager/font_manager.cpp \
     utils/translations.cpp \
     graphics/vlayout.cpp \
-    graphics/layout.cpp
+    graphics/layout.cpp \
+    engine.cpp
 
 LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lboost_filesystem -lboost_system
 
 QMAKE_CXXFLAGS += -std=c++11
 
 HEADERS += \
-    graphics/window.hpp \
     defines.hpp \
     game/game.hpp \
     pazaak/pazaak.hpp \
@@ -48,4 +47,5 @@ HEADERS += \
     utils/translations.hpp \
     pazaak/translations.hpp \
     graphics/vlayout.hpp \
-    graphics/layout.hpp
+    graphics/layout.hpp \
+    engine.hpp

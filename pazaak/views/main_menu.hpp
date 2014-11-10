@@ -12,12 +12,12 @@ class MainMenu final : public graphics::View
 {
   public:
 
-    MainMenu(SDL_Renderer* renderer, const graphics::Size& size);
+    MainMenu(const graphics::Size& size);
 
   private:
 
     /* When selected menu item changes, call this method to update the UI */
-    void setFocus(std::shared_ptr<graphics::Text>& to_select, SDL_Renderer* renderer);
+    void setFocus(std::shared_ptr<graphics::Text>& to_select);
 
   private:
 

@@ -17,17 +17,17 @@ class Text final : public Drawable
 {
   public:
 
-    Text(const std::string& text, const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent = {0,0,0,0});
+    Text(const std::string& text, const utils::Configuration& info, const SDL_Rect& parent = {0,0,0,0});
     ~Text();
 
     const SDL_Color& color() const { return m_color; }
 
-    void setColor(const SDL_Color& color, SDL_Renderer* renderer);
+    void setColor(const SDL_Color& color);
 
   private:
 
     void clean();
-    void loadText(SDL_Renderer* renderer);
+    void loadText();
 
   private:
 

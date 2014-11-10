@@ -1,7 +1,7 @@
 #include "drawable.hpp"
 
+#include "engine.hpp"
 #include "graphics/manager/texture_manager.hpp"
-#include "graphics/window.hpp"
 
 namespace graphics {
 
@@ -10,7 +10,7 @@ Drawable::Drawable(SDL_Texture* texture, const Position& position, const Size& s
   , m_destination{ position.x, position.y, size.w, size.h }
 {}
 
-Drawable::Drawable(const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent)
+Drawable::Drawable(const utils::Configuration& info, const SDL_Rect& parent)
 {
   try
   {
@@ -25,8 +25,8 @@ Drawable::Drawable(const utils::Configuration& info, SDL_Renderer* renderer, con
 
     // Texture
     const std::string& texture_path = info.get( info::Texture );
-    if(renderer && !texture_path.empty())
-      m_texture = graphics::TextureManager::get(texture_path, renderer);
+    if(!texture_path.empty())
+      m_texture = graphics::TextureManager::get(texture_path);
   }
   catch(const std::exception& e)
   {
@@ -34,17 +34,15 @@ Drawable::Drawable(const utils::Configuration& info, SDL_Renderer* renderer, con
   }
 }
 
-void Drawable::draw(SDL_Renderer* renderer)
+void Drawable::draw()
 {
-  if(!renderer)
-    LOG(ERROR) << "How do you want me do draw with a NULL renderer?";
-  else if(m_texture)
-    drawTexture( renderer, m_texture, m_clip, m_destination );
+  if(m_texture)
+    drawTexture( m_texture, m_clip, m_destination );
 }
 
-void Drawable::drawTexture(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect* clip, const SDL_Rect& destination)
+void Drawable::drawTexture(SDL_Texture* texture, SDL_Rect* clip, const SDL_Rect& destination)
 {
-  SDL_RenderCopy( renderer, texture, clip, &destination );
+  SDL_RenderCopy( Engine::renderer(), texture, clip, &destination );
 }
 
 int Drawable::readNumberOrPercentage( const std::string& info, int reference )

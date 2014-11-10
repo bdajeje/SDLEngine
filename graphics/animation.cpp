@@ -3,12 +3,13 @@
 #include <boost/algorithm/string.hpp>
 
 #include "defines.hpp"
+#include "engine.hpp"
 #include "graphics/manager/texture_manager.hpp"
 
 namespace graphics {
 
-Animation::Animation(const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent)
-  : Drawable(info, renderer, parent)
+Animation::Animation(const utils::Configuration& info, const SDL_Rect& parent)
+  : Drawable(info, parent)
 {
   try
   {

@@ -4,8 +4,8 @@
 
 namespace graphics {
 
-VLayout::VLayout(const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent)
-  : Layout{info, renderer, parent}
+VLayout::VLayout(const utils::Configuration& info, const SDL_Rect& parent)
+  : Layout{info, parent}
 {
   try
   {

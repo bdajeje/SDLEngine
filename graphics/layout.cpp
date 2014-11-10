@@ -1,23 +1,25 @@
 #include "layout.hpp"
 
+#include "engine.hpp"
+
 namespace graphics {
 
-Layout::Layout(const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent)
-  : Drawable{info, renderer, parent}
+Layout::Layout(const utils::Configuration& info, const SDL_Rect& parent)
+  : Drawable{info, parent}
   , m_background_destination{0, 0, m_destination.w, m_destination.h}
 {}
 
-void Layout::draw(SDL_Renderer* renderer)
+void Layout::draw()
 {
-  SDL_RenderSetViewport(renderer, &m_destination);
+  SDL_RenderSetViewport(Engine::renderer(), &m_destination);
 
   // Draw possible background
   if(m_texture)
-    drawTexture( renderer, m_texture, nullptr, m_background_destination );
+    drawTexture( m_texture, nullptr, m_background_destination );
 
   // Draw objects
   for( auto& object : m_objects )
-    object->draw(renderer);
+    object->draw();
 }
 
 void Layout::addObject(std::shared_ptr<Drawable> object)

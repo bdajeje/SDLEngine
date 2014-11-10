@@ -19,7 +19,7 @@ class View
     View(const Position& position, const Size& size);
     virtual ~View() = default;
 
-    void render(SDL_Renderer* renderer);
+    void render();
 
     const SDL_Rect& destination() const { return m_destination; }
 

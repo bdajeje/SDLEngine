@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL_image.h>
 
+#include "engine.hpp"
 #include "utils/logging/easylogging++.h"
 
 namespace graphics {
@@ -33,7 +34,7 @@ void TextureManager::clean()
   s_instance->m_textures.clear();
 }
 
-SDL_Texture* TextureManager::get(const std::string& path, SDL_Renderer* renderer)
+SDL_Texture* TextureManager::get(const std::string& path)
 {
   if(!s_instance)
   {
@@ -47,10 +48,10 @@ SDL_Texture* TextureManager::get(const std::string& path, SDL_Renderer* renderer
     return found->second;
 
   // Image not yet loaded
-  return s_instance->loadTexture(path, renderer);
+  return s_instance->loadTexture(path);
 }
 
-SDL_Texture* TextureManager::loadTexture(const std::string& path, SDL_Renderer* renderer)
+SDL_Texture* TextureManager::loadTexture(const std::string& path)
 {
   // Load image at specified path
   const std::string full_path = m_textures_path + path;
@@ -62,7 +63,7 @@ SDL_Texture* TextureManager::loadTexture(const std::string& path, SDL_Renderer* 
   }
 
   // Convert surface to screen format
-  SDL_Texture* texture = SDL_CreateTextureFromSurface( renderer, surface );
+  SDL_Texture* texture = SDL_CreateTextureFromSurface( Engine::renderer(), surface );
 
   // Get rid of old loaded surface
   SDL_FreeSurface( surface );

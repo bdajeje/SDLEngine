@@ -2,14 +2,15 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include "engine.hpp"
 #include "graphics/manager/font_manager.hpp"
 
 namespace graphics {
 
-Text::Text(const std::string& text, const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent )
-  : Drawable{info, renderer, parent}
+Text::Text(const std::string& text, const utils::Configuration& info, const SDL_Rect& parent)
+  : Drawable{info, parent}
   , m_text{text}
-  , m_font_file{info.get( info::Font )}
+  , m_font_file{info.get(info::Font)}
 {
   try
   {
@@ -31,7 +32,7 @@ Text::Text(const std::string& text, const utils::Configuration& info, SDL_Render
     m_color.a = std::stoi(colors[3]);
 
     // Create text
-    loadText(renderer);
+    loadText();
   }
   catch(const std::exception& e)
   {
@@ -55,7 +56,7 @@ void Text::clean()
   }
 }
 
-void Text::loadText(SDL_Renderer* renderer)
+void Text::loadText()
 {
   // Destroy previous version of text
   clean();
@@ -64,17 +65,17 @@ void Text::loadText(SDL_Renderer* renderer)
   if(!text_surface)
     LOG(ERROR) << "Can't load surface from font: " + m_font_file;
 
-  m_texture = SDL_CreateTextureFromSurface( renderer, text_surface );
+  m_texture = SDL_CreateTextureFromSurface( Engine::renderer(), text_surface );
   SDL_FreeSurface( text_surface );
 
   // Update size from generated texture
   SDL_QueryTexture(m_texture, NULL, NULL, &m_destination.w, &m_destination.h);
 }
 
-void Text::setColor(const SDL_Color& color, SDL_Renderer* renderer)
+void Text::setColor(const SDL_Color& color)
 {
   m_color = color;
-  loadText( renderer );
+  loadText();
 }
 
 }

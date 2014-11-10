@@ -12,7 +12,7 @@ class VLayout final : public Layout
 {
   public:
 
-    VLayout(const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent);
+    VLayout(const utils::Configuration& info, const SDL_Rect& parent);
 
   protected:
 

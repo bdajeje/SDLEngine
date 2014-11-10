@@ -17,7 +17,7 @@ class Animation : public Drawable
 {
   public:
 
-    Animation(const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent);
+    Animation(const utils::Configuration& info, const SDL_Rect& parent);
 
     void newFrame();
 

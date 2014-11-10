@@ -28,11 +28,11 @@ class Drawable
 {
   public:
 
-    Drawable(const utils::Configuration& info, SDL_Renderer* renderer, const SDL_Rect& parent);
+    Drawable(const utils::Configuration& info, const SDL_Rect& parent);
     Drawable(SDL_Texture* texture, const Position& position, const Size& size);
     virtual ~Drawable() = default;
 
-    virtual void draw(SDL_Renderer* renderer);
+    virtual void draw();
 
     void setPosition(const Position& position);
     void setPosition(int x, int y);
@@ -61,7 +61,7 @@ class Drawable
      */
     int readPosition(const std::string& info, int reference, int size);
 
-    void drawTexture(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect* clip, const SDL_Rect& destination);
+    void drawTexture(SDL_Texture* texture, SDL_Rect* clip, const SDL_Rect& destination);
 
   protected:
 

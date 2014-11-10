@@ -1,11 +1,12 @@
 #include "pazaak.hpp"
 
+#include "engine.hpp" // \todo to remove
+
 #include "pazaak/views/main_menu.hpp"
 
-Pazaak::Pazaak(const utils::Configuration& configs, int width, int height)
-  : Game{configs, "Pazaak", width, height}
+Pazaak::Pazaak()
 {
-  m_main_menu = std::make_shared<view::MainMenu>(window().renderer(), graphics::Size{width, height});
+  m_main_menu = std::make_shared<view::MainMenu>(Engine::windowSize());
 
   setCurrentView(m_main_menu);
 }

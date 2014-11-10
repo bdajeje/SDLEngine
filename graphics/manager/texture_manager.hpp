@@ -17,7 +17,7 @@ class TextureManager final
 
     ~TextureManager();
 
-    static SDL_Texture* get(const std::string& path, SDL_Renderer* renderer);
+    static SDL_Texture* get(const std::string& path);
 
     static void clean();
 
@@ -25,7 +25,7 @@ class TextureManager final
 
     TextureManager(const std::string& textures_path);
 
-    SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
+    SDL_Texture* loadTexture(const std::string& path);
 
   private:
 

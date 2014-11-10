@@ -1,11 +1,7 @@
 #include "game.hpp"
 
+#include "engine.hpp"
 #include "utils/logging/easylogging++.h"
-
-Game::Game(const utils::Configuration& configs, const std::string& title, int width, int height)
-  : m_configurations(configs)
-  , m_window(title, width, height)
-{}
 
 void Game::run()
 {
@@ -23,9 +19,9 @@ void Game::run()
     }
 
     // Clear screen
-    m_window.clear();
+    Engine::clearScreen();
 
     // Update screen
-    m_window.render( m_current_view );
+    Engine::render( m_current_view );
   }
 }
