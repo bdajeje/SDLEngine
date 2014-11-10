@@ -4,7 +4,6 @@
 
 #include "defines.hpp"
 #include "graphics/manager/texture_manager.hpp"
-#include "utils/logging/easylogging++.h"
 
 namespace graphics {
 

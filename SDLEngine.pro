@@ -15,7 +15,12 @@ SOURCES += main.cpp \
     utils/configuration/configuration.cpp \
     utils/files.cpp \
     graphics/animation.cpp \
-    sounds/sounds_manager.cpp
+    sounds/sounds_manager.cpp \
+    graphics/text.cpp \
+    graphics/manager/font_manager.cpp \
+    utils/translations.cpp \
+    graphics/vlayout.cpp \
+    graphics/layout.cpp
 
 LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lboost_filesystem -lboost_system
 
@@ -37,4 +42,10 @@ HEADERS += \
     utils/configuration/configuration.hpp \
     utils/files.hpp \
     graphics/animation.hpp \
-    sounds/sounds_manager.hpp
+    sounds/sounds_manager.hpp \
+    graphics/text.hpp \
+    graphics/manager/font_manager.hpp \
+    utils/translations.hpp \
+    pazaak/translations.hpp \
+    graphics/vlayout.hpp \
+    graphics/layout.hpp

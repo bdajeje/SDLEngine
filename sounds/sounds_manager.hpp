@@ -23,6 +23,8 @@ class SoundsManager
     static void pauseMusic();
     static void resumeMusic();
 
+    static void clean();
+
   private:
 
     SoundsManager(const std::string& musics_path, const std::string& sounds_path);

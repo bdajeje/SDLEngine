@@ -2,7 +2,6 @@
 
 #include "graphics/manager/texture_manager.hpp"
 #include "graphics/window.hpp"
-#include "utils/logging/easylogging++.h"
 
 namespace graphics {
 
@@ -20,12 +19,14 @@ Drawable::Drawable(const utils::Configuration& info, SDL_Renderer* renderer, con
     m_destination.h = readNumberOrPercentage(info.get( info::Height ), parent.h);
 
     // Position
-    m_destination.x = readNumberOrPercentage(info.get( info::PosX ), parent.x);
-    m_destination.y = readNumberOrPercentage(info.get( info::PosY ), parent.y);
+    // \warning this has to be called after finding sizes, because we need them here
+    m_destination.x = readPosition(info.get( info::PosX ), parent.w, m_destination.w);
+    m_destination.y = readPosition(info.get( info::PosY ), parent.h, m_destination.h);
 
     // Texture
     const std::string& texture_path = info.get( info::Texture );
-    m_texture = graphics::TextureManager::get(texture_path, renderer);
+    if(renderer && !texture_path.empty())
+      m_texture = graphics::TextureManager::get(texture_path, renderer);
   }
   catch(const std::exception& e)
   {
@@ -35,29 +36,51 @@ Drawable::Drawable(const utils::Configuration& info, SDL_Renderer* renderer, con
 
 void Drawable::draw(SDL_Renderer* renderer)
 {
-  if(!m_texture)
-  {
-    LOG(ERROR) << "Can't draw with a NULL texture!";
-    return;
-  }
-  else if(!renderer)
-  {
+  if(!renderer)
     LOG(ERROR) << "How do you want me do draw with a NULL renderer?";
-    return;
-  }
+  else if(m_texture)
+    drawTexture( renderer, m_texture, m_clip, m_destination );
+}
 
-  SDL_RenderCopy( renderer, m_texture, m_clip, &m_destination );
+void Drawable::drawTexture(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect* clip, const SDL_Rect& destination)
+{
+  SDL_RenderCopy( renderer, texture, clip, &destination );
 }
 
 int Drawable::readNumberOrPercentage( const std::string& info, int reference )
 {
-  if( info.back() == '%' )
+  if(info.empty())
+    return 0;
+  else if( info.back() == '%' )
   {
     auto percentage = stof( info.substr(0, info.length() - 1) );
     return percentage * reference / 100;
   }
   else
     return std::stoi(info);
+}
+
+int Drawable::readPosition(const std::string& info, int reference, int size)
+{
+  if(info.empty())
+    return 0;
+  else if(info.front() >= '0' && info.front() <= '9')
+    return readNumberOrPercentage(info, reference);
+  else if( info == position::Centered )
+    return (reference - size) / 2;
+
+  return 0;
+}
+
+void Drawable::setPosition(const Position& position)
+{
+  setPosition(position.x, position.y);
+}
+
+void Drawable::setPosition(int x, int y)
+{
+  m_destination.x = x;
+  m_destination.y = y;
 }
 
 }

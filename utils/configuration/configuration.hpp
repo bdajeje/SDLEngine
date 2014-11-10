@@ -11,7 +11,7 @@ class Configuration
 {
   public:
 
-    Configuration(std::string config_path, const std::vector<std::string>& files );
+    Configuration(std::string config_path, const std::vector<std::string>& files);
 
     const std::string& get(const std::string& config_key) const;
 

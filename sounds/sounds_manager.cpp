@@ -21,11 +21,18 @@ SoundsManager::SoundsManager(const std::string& musics_path, const std::string& 
 
 SoundsManager::~SoundsManager()
 {
-  for( auto music : m_musics )
-    Mix_FreeMusic( music.second );
+  clean();
+}
 
-  for( auto sound : m_sounds )
+void SoundsManager::clean()
+{
+  for( auto music : s_instance->m_musics )
+    Mix_FreeMusic( music.second );
+  s_instance->m_musics.clear();
+
+  for( auto sound : s_instance->m_sounds )
     Mix_FreeChunk( sound.second );
+  s_instance->m_sounds.clear();
 }
 
 void SoundsManager::playMusic(const std::string& music_path, int repeat)

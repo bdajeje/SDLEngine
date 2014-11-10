@@ -1,6 +1,7 @@
 #include "window.hpp"
 
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "defines.hpp"
 #include "utils/logging/easylogging++.h"
@@ -13,7 +14,7 @@ Window::Window(const std::string& title, int width, int height)
   if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
   {
     LOG(ERROR) << "SDL could not initialize! SDL_Error: " << SDL_GetError() << "\n";
-    throw;
+    throw std::exception();
   }
 
   // Create window
@@ -21,7 +22,7 @@ Window::Window(const std::string& title, int width, int height)
   if( m_window == NULL )
   {
     LOG(ERROR) << "Window could not be created! SDL_Error: " << SDL_GetError() << "\n";
-    throw;
+    throw std::exception();
   }
 
   // Create renderer
@@ -29,7 +30,7 @@ Window::Window(const std::string& title, int width, int height)
   if( m_renderer == NULL )
   {
     LOG(ERROR) << "Renderer could not be created! SDL_Error: " << SDL_GetError() << "\n";
-    throw;
+    throw std::exception();
   }
 
   // Initialize renderer color
@@ -40,14 +41,21 @@ Window::Window(const std::string& title, int width, int height)
   if( !( IMG_Init( imgFlags ) & imgFlags ) )
   {
     LOG(ERROR) << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << "\n";
-    throw;
+    throw std::exception();
+  }
+
+  // Initialize SDL_ttf
+  if( TTF_Init() == -1 )
+  {
+    LOG(ERROR) << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << "\n";
+    throw std::exception();
   }
 
   // Initialize SDL_mixer
   if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
   {
     LOG(ERROR) << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << "\n";
-    throw;
+    throw std::exception();
   }
 }
 

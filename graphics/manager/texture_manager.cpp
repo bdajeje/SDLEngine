@@ -22,9 +22,15 @@ TextureManager::TextureManager(const std::string& textures_path)
 
 TextureManager::~TextureManager()
 {
+  clean();
+}
+
+void TextureManager::clean()
+{
   // Delete all textures
-  for(auto texture : m_textures)
+  for(auto texture : s_instance->m_textures)
     SDL_DestroyTexture(texture.second);
+  s_instance->m_textures.clear();
 }
 
 SDL_Texture* TextureManager::get(const std::string& path, SDL_Renderer* renderer)
