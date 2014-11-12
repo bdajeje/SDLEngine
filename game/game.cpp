@@ -16,6 +16,12 @@ void Game::run()
       // User requests quit
       if( event.type == SDL_QUIT )
         quit = true;
+
+      // Let child class do whatevere it wants with events
+      newEvent( event );
+
+      // Give event to the current view
+      m_current_view->newEvent( event );
     }
 
     // Clear screen

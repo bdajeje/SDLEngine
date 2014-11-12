@@ -9,30 +9,25 @@ namespace graphics {
 
 Text::Text(const std::string& text, const utils::Configuration& info, const SDL_Rect& parent)
   : Drawable{info, parent}
-  , m_text{text}
-  , m_font_file{info.get(info::Font)}
 {
   try
   {
     // Font properties
-    m_font_size = std::stoi(info.get( info::FontSize ));
-
-    // Parse colors
-    auto colors_str = info.get( info::FontColor );
-    std::vector<std::string> colors;
-    boost::algorithm::split(colors, colors_str, boost::is_any_of(","));
-    if(colors.size() != 4)
-    {
-      LOG(ERROR) << "Bad colors syntax in text info file";
-      throw std::exception();
-    }
-    m_color.r = std::stoi(colors[0]);
-    m_color.g = std::stoi(colors[1]);
-    m_color.b = std::stoi(colors[2]);
-    m_color.a = std::stoi(colors[3]);
+    const std::string& font_file = info.get(info::Font);
+    auto font_size               = std::stoi(info.get( info::FontSize ));
+    SDL_Color normal_color       = parseColor( info.get(info::FontColor) );
 
     // Create text
-    loadText();
+    m_normal_texture = createText( text, font_file, font_size, normal_color );
+    m_texture = m_normal_texture; // By default text is not selected, so point to m_normal_texture
+
+    // Create selected version of text if needed
+    const std::string& selected_color_prop = info.get(info::FontColorSelected);
+    if( !selected_color_prop.empty() )
+      m_selected_texture = createText( text, font_file, font_size, parseColor( selected_color_prop ) );
+
+    // Update size from generated texture
+    SDL_QueryTexture(m_texture, NULL, NULL, &m_destination.w, &m_destination.h);
   }
   catch(const std::exception& e)
   {
@@ -44,38 +39,56 @@ Text::~Text()
 {
   // Drawable doesn't destroy its texture because it comes from Texture Manager,
   // In Text class we need to do it manually because we manually loaded this texture.
-  clean();
+  clean(m_texture);
+  clean(m_selected_texture);
 }
 
-void Text::clean()
+SDL_Color Text::parseColor(const std::string& color_property)
 {
-  if(m_texture)
+  SDL_Color color;
+
+  static const size_t color_nbr_fields {4};
+  std::vector<std::string> colors;
+  colors.reserve(color_nbr_fields); // We know there is 4 fields
+  boost::algorithm::split(colors, color_property, boost::is_any_of(","));
+  if(colors.size() != color_nbr_fields)
   {
-    SDL_DestroyTexture( m_texture );
-    m_texture = nullptr;
+    LOG(ERROR) << "Bad colors syntax in text info file";
+    throw std::exception();
+  }
+
+  color.r = std::stoi(colors[0]);
+  color.g = std::stoi(colors[1]);
+  color.b = std::stoi(colors[2]);
+  color.a = std::stoi(colors[3]);
+
+  return color;
+}
+
+void Text::clean( SDL_Texture* texture )
+{
+  if(texture)
+  {
+    SDL_DestroyTexture( texture );
+    texture = nullptr;
   }
 }
 
-void Text::loadText()
+SDL_Texture* Text::createText( const std::string& text, const std::string& font_file, int font_size, const SDL_Color& color )
 {
-  // Destroy previous version of text
-  clean();
-
-  SDL_Surface* text_surface = TTF_RenderText_Solid( graphics::FontManager::get(m_font_file, m_font_size), m_text.c_str(), m_color );
+  SDL_Surface* text_surface = TTF_RenderText_Solid( graphics::FontManager::get(font_file, font_size), text.c_str(), color );
   if(!text_surface)
-    LOG(ERROR) << "Can't load surface from font: " + m_font_file;
+    LOG(ERROR) << "Can't load surface from font: " + font_file;
 
-  m_texture = SDL_CreateTextureFromSurface( Engine::renderer(), text_surface );
+  SDL_Texture* texture = SDL_CreateTextureFromSurface( Engine::renderer(), text_surface );
   SDL_FreeSurface( text_surface );
 
-  // Update size from generated texture
-  SDL_QueryTexture(m_texture, NULL, NULL, &m_destination.w, &m_destination.h);
+  return texture;
 }
 
-void Text::setColor(const SDL_Color& color)
+void Text::setSelected(bool selected)
 {
-  m_color = color;
-  loadText();
+  m_texture = (selected && m_selected_texture) ? m_selected_texture : m_normal_texture;
 }
 
 }

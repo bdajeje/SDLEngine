@@ -19,42 +19,68 @@ MainMenu::MainMenu(const graphics::Size& size)
   utils::Configuration background_info {IMAGE_INFO_PATH, {"main_menu/background"}};
   addObject( std::make_shared<graphics::Drawable>(background_info, destination() ) );
 
-  // Menu texts
-  utils::Configuration text_info {IMAGE_INFO_PATH, {"main_menu/text"}};
+  // Menu layout
   utils::Configuration menu_info {IMAGE_INFO_PATH, {"main_menu/menu"}};
   m_menu = std::make_shared<graphics::VLayout>(menu_info, destination());
-  m_play_text = std::make_shared<graphics::Text>(utils::Translations::translate(translations::MainMenu::Play), text_info );
-  m_menu->addObject( m_play_text );
-  m_settings_text = std::make_shared<graphics::Text>(utils::Translations::translate(translations::MainMenu::Settings), text_info );
-  m_menu->addObject( m_settings_text );
-  m_quit_text = std::make_shared<graphics::Text>(utils::Translations::translate(translations::MainMenu::Quit), text_info );
-  m_menu->addObject( m_quit_text );
   addObject(m_menu);
 
-  // Get normal color from text info
-  // \todo get those value from info file (in a generic Menu class)
-  m_normal_color   = m_play_text->color();
-  m_selected_color = SDL_Color{252,199,91,255};
+  // Menu items
+  utils::Configuration text_info {IMAGE_INFO_PATH, {"main_menu/text"}};
+  m_items.emplace_back( std::make_shared<graphics::Text>(utils::Translations::translate(translations::MainMenu::Play), text_info ) );
+  m_items.emplace_back( std::make_shared<graphics::Text>(utils::Translations::translate(translations::MainMenu::Settings), text_info ) );
+  m_items.emplace_back( std::make_shared<graphics::Text>(utils::Translations::translate(translations::MainMenu::Quit), text_info ) );
+
+  // Add menu items to layout
+  for(auto& item : m_items)
+    m_menu->addObject( item );
 
   // Logo
   utils::Configuration logo_info {IMAGE_INFO_PATH, {"main_menu/logo"}};
   m_logo = std::make_shared<graphics::Animation>( logo_info, destination() );
   addAnimation( m_logo );
 
-  setFocus(m_play_text);
+  setFocus( selectedItem() );
 }
 
-void MainMenu::setFocus(std::shared_ptr<graphics::Text>& to_select)
+void MainMenu::setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item)
 {
+  for( auto& item : m_items )
+    item->setSelected( item == newly_selected_item );
+
   // Place logo on current selected menu item
   static const int x_margin = 20;
-  m_logo->setPosition( to_select->posX() - m_logo->width()- x_margin, to_select->posY() );
+  m_logo->setPosition( newly_selected_item->posX() - m_logo->width()- x_margin, newly_selected_item->posY() );
+}
 
-  // Set a new color for the selected item
-  // \todo update this to allow generic usages
-  m_play_text->setColor( (to_select == m_play_text) ? m_selected_color : m_normal_color );
-  m_settings_text->setColor( (to_select == m_settings_text) ? m_selected_color : m_normal_color );
-  m_quit_text->setColor( (to_select == m_quit_text) ? m_selected_color : m_normal_color );
+void MainMenu::newEvent( const SDL_Event& event )
+{
+  // Handles only key up or down
+  if( !event.type == SDL_KEYDOWN )
+    return;
+
+  switch(event.key.keysym.sym)
+  {
+    case SDLK_DOWN:
+      m_selected_item_pos++;
+      if( m_selected_item_pos >= m_items.size())
+        m_selected_item_pos = 0;
+      break;
+    case SDLK_UP:
+      if( m_selected_item_pos == 0)
+        m_selected_item_pos = m_items.size() - 1;
+      else
+        m_selected_item_pos--;
+      break;
+    default:
+      return;
+  }
+
+  setFocus( selectedItem() );
+}
+
+const std::shared_ptr<graphics::Text>& MainMenu::selectedItem() const
+{
+  return m_items[m_selected_item_pos];
 }
 
 }

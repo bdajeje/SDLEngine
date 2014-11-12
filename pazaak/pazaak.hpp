@@ -13,6 +13,10 @@ class Pazaak final : public Game
 
     Pazaak();
 
+  protected:
+
+    void event( const SDL_Event& event );
+
   private:
 
     std::shared_ptr<view::MainMenu> m_main_menu;

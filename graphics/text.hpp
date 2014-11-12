@@ -11,6 +11,7 @@ namespace info {
   static const std::string Font {"font"};
   static const std::string FontSize {"font_size"};
   static const std::string FontColor {"font_color"};
+  static const std::string FontColorSelected {"font_color_selected"};
 }
 
 class Text final : public Drawable
@@ -20,21 +21,18 @@ class Text final : public Drawable
     Text(const std::string& text, const utils::Configuration& info, const SDL_Rect& parent = {0,0,0,0});
     ~Text();
 
-    const SDL_Color& color() const { return m_color; }
-
-    void setColor(const SDL_Color& color);
+    void setSelected(bool selected);
 
   private:
 
-    void clean();
-    void loadText();
+    static void clean( SDL_Texture* texture );
+    static SDL_Texture* createText( const std::string& text, const std::string& font_file, int font_size, const SDL_Color& color );
+    static SDL_Color parseColor(const std::string& color_property);
 
   private:
 
-    SDL_Color m_color;
-    std::string m_text;
-    std::string m_font_file;
-    int m_font_size;
+    SDL_Texture* m_normal_texture;             // Texture to display when not selected
+    SDL_Texture* m_selected_texture {nullptr}; // Texture to display when selected
 };
 
 }

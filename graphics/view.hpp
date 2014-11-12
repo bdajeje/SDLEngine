@@ -20,6 +20,7 @@ class View
     virtual ~View() = default;
 
     void render();
+    virtual void newEvent( const SDL_Event& /*event*/ ) {}
 
     const SDL_Rect& destination() const { return m_destination; }
 

@@ -10,3 +10,8 @@ Pazaak::Pazaak()
 
   setCurrentView(m_main_menu);
 }
+
+void Pazaak::event(const SDL_Event &/*event*/)
+{
+  // \todo on escape key always show menu
+}

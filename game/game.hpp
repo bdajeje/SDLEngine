@@ -13,6 +13,8 @@ class Game
 
     void setCurrentView(graphics::ViewPtr view) { m_current_view = view; }
 
+    virtual void newEvent( const SDL_Event& ) {}
+
   private:
 
     graphics::ViewPtr m_current_view;
