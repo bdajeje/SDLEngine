@@ -1,6 +1,8 @@
 #ifndef PAZAAK_MAIN_MENU_HPP
 #define PAZAAK_MAIN_MENU_HPP
 
+#include <chrono>
+
 #include "graphics/size.hpp"
 #include "graphics/text.hpp"
 #include "graphics/view.hpp"
@@ -23,6 +25,9 @@ class MainMenu final : public graphics::View
     /* When selected menu item changes, call this method to update the UI */
     void setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item);
 
+    /* Triggered for keyboard event */
+    void keyboardChangeSelection(SDL_Keycode key);
+
   private:
 
   // Specific to main menu
@@ -35,9 +40,8 @@ class MainMenu final : public graphics::View
     // Currently selected/focused item position in m_items
     size_t m_selected_item_pos {0};
 
-  // \todo move that to text class
-    SDL_Color m_normal_color;
-    SDL_Color m_selected_color;
+    std::chrono::microseconds last_keyboard_change {0};
+    static const std::chrono::microseconds mimimum_keyboard_time_repeat;
 };
 
 }

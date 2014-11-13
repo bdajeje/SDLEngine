@@ -12,6 +12,8 @@
 
 namespace view {
 
+const std::chrono::microseconds MainMenu::mimimum_keyboard_time_repeat {100000};
+
 MainMenu::MainMenu(const graphics::Size& size)
   : View{ graphics::Position{0,0}, size }
 {
@@ -58,7 +60,22 @@ void MainMenu::newEvent( const SDL_Event& event )
   if( !event.type == SDL_KEYDOWN )
     return;
 
-  switch(event.key.keysym.sym)
+  keyboardChangeSelection(event.key.keysym.sym);
+}
+
+void MainMenu::keyboardChangeSelection(SDL_Keycode key)
+{
+  if( key != SDLK_DOWN && key != SDLK_UP )
+    return;
+
+  // For item selection change, check the last time we did it to prevent too fast updates
+  const auto now = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() );
+  if( now - last_keyboard_change < mimimum_keyboard_time_repeat )
+    return;
+LOG(DEBUG) << now.count() << " - " << last_keyboard_change.count() << " = " << ((now-last_keyboard_change).count());
+  last_keyboard_change = now;
+
+  switch(key)
   {
     case SDLK_DOWN:
       m_selected_item_pos++;
