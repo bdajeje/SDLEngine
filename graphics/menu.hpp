@@ -26,6 +26,8 @@ class Menu : public graphics::View
 
     virtual void newEvent( const SDL_Event& event );
 
+    void setChangeSelectionSound( const std::string& file ) { m_change_selection_sound = file; }
+
   protected:
 
     /* Triggered for keyboard event */
@@ -41,6 +43,9 @@ class Menu : public graphics::View
 
     // Currently selected/focused item position in m_items
     size_t m_selected_item_pos {0};
+
+    // Sounds
+    std::string m_change_selection_sound;
 
     // Protect against repeated too fast keyboard events
     std::chrono::microseconds last_keyboard_change {0};

@@ -1,10 +1,11 @@
 #include "menu.hpp"
 
 #include "defines.hpp"
+#include "sounds/sounds_manager.hpp"
 
 namespace graphics {
 
-const std::chrono::microseconds Menu::mimimum_keyboard_time_repeat {100000};
+const std::chrono::microseconds Menu::mimimum_keyboard_time_repeat {200000};
 
 Menu::Menu(const graphics::Size& size, const std::string& menu_info_file,
            const std::vector<std::string>& texts, const std::string& text_info_file,
@@ -84,8 +85,13 @@ const std::shared_ptr<graphics::Text>& Menu::selectedItem() const
 
 void Menu::setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item)
 {
+  // Update selected item UI
   for( auto& item : m_items )
     item->setSelected( item == newly_selected_item );
+
+  // Play sound
+  if( !m_change_selection_sound.empty() )
+    sounds::SoundsManager::playSound(m_change_selection_sound);
 }
 
 }
