@@ -51,4 +51,6 @@ HEADERS += \
     graphics/layout.hpp \
     engine.hpp \
     graphics/menu.hpp \
-    pazaak/sounds.hpp
+    pazaak/sounds.hpp \
+    pazaak/musics.hpp \
+    utils/configuration/configurations.hpp

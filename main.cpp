@@ -20,10 +20,10 @@ int main( int argc, char* argv[] )
 
   // Init the engine
   Engine::init ( "Pazaak", args.get(WINDOW_WIDTH, 800), args.get(WINDOW_HEIGHT, 600),
-                  "resources/configurations/", std::vector<std::string>{"sounds"},
-                  "resources/translations/", "en",
-                  "resources/images/", "resources/fonts/",
-                  "resources/musics/", "resources/sounds/"
+                 "resources/configurations/", std::vector<std::string>{"configurations"},
+                 "resources/translations/", "en",
+                 "resources/images/", "resources/fonts/",
+                 "resources/musics/", "resources/sounds/"
                 );
 
   // Start game

@@ -18,10 +18,12 @@ class SoundsManager
     ~SoundsManager();
 
     static void playMusic(const std::string& music_path, int repeat = 0);
-    static void playSound(const std::string& sound_path, int repeat = 0);
-
     static void pauseMusic();
     static void resumeMusic();
+    static void setMusicVolume(short volume);
+
+    static void playSound(const std::string& sound_path, int repeat = 0);
+    static void setSoundVolume(short volume) { s_instance->m_sound_volume = volume; }
 
     static void clean();
 
@@ -41,6 +43,8 @@ class SoundsManager
 
     std::map<std::string, Mix_Music*> m_musics;
     std::map<std::string, Mix_Chunk*> m_sounds;
+
+    short m_sound_volume {50};
 
     static std::unique_ptr<SoundsManager> s_instance;
 };

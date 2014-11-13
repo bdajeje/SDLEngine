@@ -2,9 +2,7 @@
 
 # Sounds
 sound_volume=50
-sound_actived=true
 
 # Music
-music_volum=50
-music_activated=true
+music_volume=50
 

@@ -2,8 +2,10 @@
 
 #include "defines.hpp"
 #include "graphics/animation.hpp"
+#include "sounds/sounds_manager.hpp"
 #include "utils/translations.hpp"
 
+#include "pazaak/musics.hpp"
 #include "pazaak/sounds.hpp"
 #include "pazaak/translations.hpp"
 
@@ -26,6 +28,9 @@ MainMenu::MainMenu(const graphics::Size& size)
 
   // Set change selection sound (after setting the focus so we do not play a sound when menu is created)
   setChangeSelectionSound(sound::menu::CHANGE_SELECTION);
+
+  // Play a nice music :)
+  sounds::SoundsManager::playMusic( music::MainMenu, -1 );
 }
 
 void MainMenu::setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item)

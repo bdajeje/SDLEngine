@@ -40,9 +40,17 @@ void SoundsManager::playMusic(const std::string& music_path, int repeat)
   Mix_PlayMusic( instance()->getMusic(music_path), repeat );
 }
 
+void SoundsManager::setMusicVolume(short volume)
+{
+  Mix_VolumeMusic(volume);
+}
+
 void SoundsManager::playSound(const std::string& sound_path, int repeat)
 {
-  Mix_PlayChannel( -1, instance()->getSound(sound_path), repeat );
+  // We need to specify the sound volume each time we play it
+  auto sound = instance()->getSound(sound_path);
+  Mix_VolumeChunk(sound, s_instance->m_sound_volume);
+  Mix_PlayChannel( -1, sound, repeat );
 }
 
 void SoundsManager::pauseMusic()

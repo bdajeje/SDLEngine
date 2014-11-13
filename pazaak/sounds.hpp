@@ -1,5 +1,5 @@
-#ifndef SOUNDS_HPP
-#define SOUNDS_HPP
+#ifndef PAZAAK_SOUNDS_HPP
+#define PAZAAK_SOUNDS_HPP
 
 #include <string>
 
@@ -11,4 +11,4 @@ namespace sound {
 
 }
 
-#endif // SOUNDS_HPP
+#endif // PAZAAK_SOUNDS_HPP

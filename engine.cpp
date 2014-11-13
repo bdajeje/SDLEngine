@@ -6,6 +6,7 @@
 #include "graphics/manager/font_manager.hpp"
 #include "graphics/manager/texture_manager.hpp"
 #include "sounds/sounds_manager.hpp"
+#include "utils/configuration/configurations.hpp"
 #include "utils/logging/easylogging++.h"
 #include "utils/translations.hpp"
 
@@ -83,7 +84,20 @@ Engine::Engine(const std::string& configs_path, const std::vector<std::string>& 
   : m_configurations{ configs_path, config_files }
   , m_window{window}
   , m_renderer{renderer}
-{}
+{
+  try
+  {
+    // Apply last time used sound volume
+    sounds::SoundsManager::setSoundVolume( std::stoi(m_configurations.get( config::sound::Volume )) );
+
+    // Apply last time used music volume
+    sounds::SoundsManager::setMusicVolume( std::stoi(m_configurations.get( config::music::Volume )) );
+  }
+  catch(const std::exception& e)
+  {
+    LOG(ERROR) << "Bad engine configurations: " << e.what();
+  }
+}
 
 void Engine::clean()
 {
