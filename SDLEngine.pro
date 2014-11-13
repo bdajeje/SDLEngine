@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     utils/translations.cpp \
     graphics/vlayout.cpp \
     graphics/layout.cpp \
-    engine.cpp
+    engine.cpp \
+    graphics/menu.cpp
 
 LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lboost_filesystem -lboost_system
 
@@ -48,4 +49,5 @@ HEADERS += \
     pazaak/translations.hpp \
     graphics/vlayout.hpp \
     graphics/layout.hpp \
-    engine.hpp
+    engine.hpp \
+    graphics/menu.hpp
