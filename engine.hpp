@@ -6,6 +6,11 @@
 #include "graphics/size.hpp"
 #include "graphics/view.hpp"
 
+struct Events
+{
+  Uint32 MenuSelectItem {(Uint32)-1};
+};
+
 class Engine
 {
   public:
@@ -18,14 +23,13 @@ class Engine
 
     static void clean();
 
-    //std::unique_ptr<Engine>& instance() { return s_instance; }
-
     static void clearScreen();
     static void render(graphics::ViewPtr view);
     static graphics::Size windowSize();
-
-    // \todo to remove
     static SDL_Renderer* renderer() { return s_instance->m_renderer; }
+
+    // Events
+    static const Events& events() { return s_events; }
 
   private:
 
@@ -40,6 +44,9 @@ class Engine
     SDL_Renderer* m_renderer {nullptr};
 
     static std::unique_ptr<Engine> s_instance;
+
+    // Specific events
+    static Events s_events;
 };
 
 #endif // ENGINE_HPP

@@ -6,7 +6,8 @@
 namespace sound {
 
   namespace menu {
-    const std::string CHANGE_SELECTION {"menu/selection_change.wav"};
+    const std::string CHANGE_ITEM {"menu/selection_change.ogg"};
+    const std::string SELECT_ITEM {"menu/select_item.wav"};
   }
 
 }

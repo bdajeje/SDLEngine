@@ -21,7 +21,10 @@ SOURCES += main.cpp \
     graphics/vlayout.cpp \
     graphics/layout.cpp \
     engine.cpp \
-    graphics/menu.cpp
+    graphics/menu.cpp \
+    pazaak/views/play_menu.cpp \
+    pazaak/views/option_menu.cpp \
+    pazaak/views/pazaak_menu.cpp
 
 LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lboost_filesystem -lboost_system
 
@@ -53,4 +56,7 @@ HEADERS += \
     graphics/menu.hpp \
     pazaak/sounds.hpp \
     pazaak/musics.hpp \
-    utils/configuration/configurations.hpp
+    utils/configuration/configurations.hpp \
+    pazaak/views/play_menu.hpp \
+    pazaak/views/option_menu.hpp \
+    pazaak/views/pazaak_menu.hpp

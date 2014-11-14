@@ -1,11 +1,12 @@
 #include "menu.hpp"
 
 #include "defines.hpp"
+#include "engine.hpp"
 #include "sounds/sounds_manager.hpp"
 
 namespace graphics {
 
-const std::chrono::microseconds Menu::mimimum_keyboard_time_repeat {200000};
+const std::chrono::microseconds Menu::mimimum_keyboard_time_repeat {100000};
 
 Menu::Menu(const graphics::Size& size, const std::string& menu_info_file,
            const std::vector<std::string>& texts, const std::string& text_info_file,
@@ -40,17 +41,29 @@ Menu::Menu(const graphics::Size& size, const std::string& menu_info_file,
 void Menu::newEvent( const SDL_Event& event )
 {
   // Handles only key up or down
-  if( !event.type == SDL_KEYDOWN )
-    return;
+  if( event.type == SDL_KEYDOWN )
+  {
+    if( event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_DOWN )
+      keyboardChangeSelection(event.key.keysym.sym);
+    else if( event.key.keysym.sym == SDLK_RETURN )
+      chooseItem();
+  }
+  // \todo handle mouse events (mouse over menu item and mouse click on menu item)
+}
 
-  keyboardChangeSelection(event.key.keysym.sym);
+void Menu::chooseItem()
+{
+  // Play choose item sound if any
+  if( !m_select_item_sound.empty() )
+    sounds::SoundsManager::playSound(m_select_item_sound);
+
+  // Send event
+  SDL_Event event {Engine::events().MenuSelectItem};
+  SDL_PushEvent(&event);
 }
 
 void Menu::keyboardChangeSelection(SDL_Keycode key)
 {
-  if( key != SDLK_DOWN && key != SDLK_UP )
-    return;
-
   // For item selection change, check the last time we did it to prevent too fast updates
   const auto now = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() );
   if( now - last_keyboard_change < mimimum_keyboard_time_repeat )
@@ -81,6 +94,18 @@ void Menu::keyboardChangeSelection(SDL_Keycode key)
 const std::shared_ptr<graphics::Text>& Menu::selectedItem() const
 {
   return m_items[m_selected_item_pos];
+}
+
+void Menu::setFocusToPosition(size_t item_offest )
+{
+  if( item_offest >= m_items.size() )
+  {
+    LOG(ERROR) << "Can't select menu item at position " << item_offest << " when there are only " << m_items.size() << " items";
+    return;
+  }
+
+  m_selected_item_pos = item_offest;
+  setFocus( m_items[item_offest] );
 }
 
 void Menu::setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item)

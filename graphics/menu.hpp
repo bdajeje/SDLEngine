@@ -23,10 +23,13 @@ class Menu : public graphics::View
          Display display = Display::Vertically, const std::string& background_info_file = {});
 
     const std::shared_ptr<graphics::Text>& selectedItem() const;
+    size_t selectedPosition() const { return m_selected_item_pos; }
 
     virtual void newEvent( const SDL_Event& event );
 
-    void setChangeSelectionSound( const std::string& file ) { m_change_selection_sound = file; }
+    void setChangeItemSound( const std::string& file ) { m_change_selection_sound = file; }
+    void setChooseItemSound( const std::string& file ) { m_select_item_sound = file; }
+    void setFocusToPosition( size_t item_offest );
 
   protected:
 
@@ -35,6 +38,9 @@ class Menu : public graphics::View
 
     /* When selected menu item changes, call this method to update the UI */
     virtual void setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item);
+
+    /* Triggered when a menu item is choosen */
+    void chooseItem();
 
   protected:
 
@@ -46,6 +52,7 @@ class Menu : public graphics::View
 
     // Sounds
     std::string m_change_selection_sound;
+    std::string m_select_item_sound;
 
     // Protect against repeated too fast keyboard events
     std::chrono::microseconds last_keyboard_change {0};

@@ -5,17 +5,16 @@
 
 void Game::run()
 {
-  bool quit = false;
   SDL_Event event;
 
   // Handle events on queue
-  while( !quit )
+  while( !m_quit )
   {
     while( SDL_PollEvent( &event ) != 0 )
     {
       // User requests quit
       if( event.type == SDL_QUIT )
-        quit = true;
+        m_quit = true;
 
       // Let child class do whatevere it wants with events
       newEvent( event );

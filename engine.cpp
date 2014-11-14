@@ -11,6 +11,7 @@
 #include "utils/translations.hpp"
 
 std::unique_ptr<Engine> Engine::s_instance;
+Events Engine::s_events;
 
 void Engine::init(const std::string& title, int width, int height,
                   const std::string& configs_path, const std::vector<std::string>& config_files,
@@ -76,6 +77,9 @@ void Engine::init(const std::string& title, int width, int height,
     LOG(ERROR) << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << "\n";
     throw std::exception();
   }
+
+  // Initialize events
+  s_events.MenuSelectItem = SDL_RegisterEvents(1);
 
   s_instance.reset( new Engine(configs_path, config_files, window, renderer) );
 }

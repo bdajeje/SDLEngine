@@ -8,6 +8,7 @@ class Game
   public:
 
     void run();
+    void quit() { m_quit = true; }
 
   protected:
 
@@ -15,9 +16,10 @@ class Game
 
     virtual void newEvent( const SDL_Event& ) {}
 
-  private:
+  protected:
 
     graphics::ViewPtr m_current_view;
+    bool m_quit {false};
 };
 
 #endif // GAME_HPP

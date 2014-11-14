@@ -1,8 +1,8 @@
 # Sounds / Musics related configurations
 
 # Sounds
-sound_volume=50
+sound_volume=100
 
 # Music
-music_volume=50
+music_volume=1
 

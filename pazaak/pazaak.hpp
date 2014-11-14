@@ -5,6 +5,8 @@
 
 namespace view {
   class MainMenu;
+  class PlayMenu;
+  class OptionMenu;
 }
 
 class Pazaak final : public Game
@@ -15,11 +17,15 @@ class Pazaak final : public Game
 
   protected:
 
-    void event( const SDL_Event& event );
+    void newEvent( const SDL_Event& event );
+    void showPlayMenu();
+    void showOptionMenu();
 
   private:
 
     std::shared_ptr<view::MainMenu> m_main_menu;
+    std::shared_ptr<view::PlayMenu> m_play_menu;
+    std::shared_ptr<view::OptionMenu> m_option_menu;
 };
 
 #endif // PAZAAK_HPP
