@@ -35,21 +35,129 @@ Menu::Menu(const graphics::Size& size, const std::string& menu_info_file,
   for(auto& item : m_items)
     m_menu->addObject( item );
 
+  // Compute menu item borders to speed up mouse move event (so we don't try to find over which item the mouse is if not inside those borders)
+  computeItemBorders();
+
   setFocus( selectedItem() );
+}
+
+void Menu::computeItemBorders()
+{
+  // No item? Nothing to do
+  if( m_items.empty() )
+    return;
+
+  // Min Y
+  m_item_min_limits.y = itemPosY(m_items.front());
+
+  // Max Y
+  const auto& last_item = m_items.back();
+  m_item_max_limits.y = itemPosY(last_item) + last_item->height();
+
+  // Min and max X
+  const auto& first_item = m_items.front();
+  m_item_min_limits.x = itemPosX(first_item);
+  m_item_max_limits.x = m_item_min_limits.x + first_item->width();
+  int x_first_point, x_last_point;
+  const size_t size = m_items.size();
+  for( size_t offset = 1; offset < size; ++offset )
+  {
+    const auto& item = m_items[offset];
+
+    // Min X
+    x_first_point = itemPosX(item);
+    if( m_item_min_limits.x > x_first_point )
+      m_item_min_limits.x = x_first_point;
+
+    // Max X
+    x_last_point = x_first_point + item->width();
+    if( x_last_point > m_item_max_limits.x )
+      m_item_max_limits.x = x_last_point;
+  }
 }
 
 void Menu::newEvent( const SDL_Event& event )
 {
   // Handles only key up or down
-  if( event.type == SDL_KEYDOWN )
+  switch(event.type)
   {
-    if( event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_DOWN )
-      keyboardChangeSelection(event.key.keysym.sym);
-    else if( event.key.keysym.sym == SDLK_RETURN )
-      chooseItem();
+    case SDL_KEYDOWN:
+    {
+      if( event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_DOWN )
+        keyboardChangeSelection(event.key.keysym.sym);
+      else if( event.key.keysym.sym == SDLK_RETURN )
+        chooseItem();
+
+      break;
+    }
+    case SDL_MOUSEMOTION: mouseMove(); break;
+    case SDL_MOUSEBUTTONUP: mouseClick(); break;
   }
-  // \todo handle mouse events (mouse over menu item and mouse click on menu item)
 }
+
+size_t Menu::itemUnderMouse() const
+{
+  // Get mouse position
+  Position mouse_pos = Engine::mousePosition();
+
+  // If not even inside item borders, it can't be over any items
+  if( mouse_pos.x < m_item_min_limits.x || mouse_pos.x > m_item_max_limits.x ||
+      mouse_pos.y < m_item_min_limits.y || mouse_pos.y > m_item_max_limits.y )
+    return m_items.size() + 1;
+
+  // Find over which item is the mouse
+  int item_x, item_y;
+  size_t offset;
+  size_t size = m_items.size();
+  for( offset = 0; offset < size; ++offset )
+  {
+    const auto& item = m_items[offset];
+    item_x = itemPosX(item);
+    item_y = itemPosY(item);
+
+    if( mouse_pos.x > item_x && mouse_pos.x < (item_x + item->width()) &&
+        mouse_pos.y > item_y && mouse_pos.y < (item_y + item->height()) )
+      return offset;
+  }
+
+  return m_items.size() + 1;
+}
+
+int Menu::itemPosX(const std::shared_ptr<graphics::Text>& item) const
+{
+  return m_menu->posX() + item->posX();
+}
+
+int Menu::itemPosY(const std::shared_ptr<graphics::Text>& item) const
+{
+  return m_menu->posY() + item->posY();
+}
+
+void Menu::mouseMove()
+{
+  size_t item_offset = itemUnderMouse();
+  if( item_offset < m_items.size() )
+    setFocusToPosition( item_offset );
+}
+
+void Menu::mouseClick()
+{
+  if( itemUnderMouse() )
+    chooseItem();
+}
+
+//size_t Menu::itemOffset(const std::shared_ptr<graphics::Text>& wanted_item)
+//{
+//  size_t offset = 0;
+//  size_t size   = m_items.size();
+//  for( ; offset < size; ++offset )
+//  {
+//    if( wanted_item == m_items[offset] )
+//      break;
+//  }
+
+//  return offset;
+//}
 
 void Menu::chooseItem()
 {
@@ -96,9 +204,12 @@ const std::shared_ptr<graphics::Text>& Menu::selectedItem() const
   return m_items[m_selected_item_pos];
 }
 
-void Menu::setFocusToPosition(size_t item_offest )
+void Menu::setFocusToPosition(size_t item_offest)
 {
-  if( item_offest >= m_items.size() )
+  // If the offset is already the selected one, return
+  if( item_offest == m_selected_item_pos )
+    return;
+  else if( item_offest >= m_items.size() )
   {
     LOG(ERROR) << "Can't select menu item at position " << item_offest << " when there are only " << m_items.size() << " items";
     return;

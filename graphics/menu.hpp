@@ -33,6 +33,14 @@ class Menu : public graphics::View
 
   protected:
 
+    /* Pre calculate items min/max borders to speed up mouse move event processing */
+    void computeItemBorders();
+
+    /* Find position of a given item inside m_items
+     * If the item couldn't be found, return an invalid position
+     */
+    //size_t itemOffset(const std::shared_ptr<graphics::Text>& wanted_item);
+
     /* Triggered for keyboard event */
     void keyboardChangeSelection(SDL_Keycode key);
 
@@ -41,6 +49,21 @@ class Menu : public graphics::View
 
     /* Triggered when a menu item is choosen */
     void chooseItem();
+
+    /* Handle mouse move event */
+    void mouseMove();
+
+    /* Handle mouse click event */
+    void mouseClick();
+
+    /* Find item under mouse
+     * return offset inside m_items of the item under the mouse or m_items.size()+1 if no item under mouse
+     */
+    size_t itemUnderMouse() const;
+
+    /* Get item position taking into account the menu position where the item is */
+    int itemPosX(const std::shared_ptr<graphics::Text>& item) const;
+    int itemPosY(const std::shared_ptr<graphics::Text>& item) const;
 
   protected:
 
@@ -53,6 +76,10 @@ class Menu : public graphics::View
     // Sounds
     std::string m_change_selection_sound;
     std::string m_select_item_sound;
+
+    // Menu item borders
+    Position m_item_min_limits;
+    Position m_item_max_limits;
 
     // Protect against repeated too fast keyboard events
     std::chrono::microseconds last_keyboard_change {0};

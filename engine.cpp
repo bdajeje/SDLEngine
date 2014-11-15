@@ -136,3 +136,10 @@ graphics::Size Engine::windowSize()
   SDL_GetWindowSize( s_instance->m_window, &width, &height );
   return {width, height};
 }
+
+graphics::Position Engine::mousePosition()
+{
+  graphics::Position position;
+  SDL_GetMouseState( &position.x, &position.y );
+  return position;
+}

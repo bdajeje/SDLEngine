@@ -5,6 +5,9 @@ namespace graphics {
 
 struct Position
 {
+  Position()
+  {}
+
   Position(int x, int y)
     : x(x)
     , y(y)

@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "graphics/position.hpp"
 #include "graphics/size.hpp"
 #include "graphics/view.hpp"
 
@@ -27,6 +28,7 @@ class Engine
     static void render(graphics::ViewPtr view);
     static graphics::Size windowSize();
     static SDL_Renderer* renderer() { return s_instance->m_renderer; }
+    static graphics::Position mousePosition();
 
     // Events
     static const Events& events() { return s_events; }
