@@ -80,6 +80,7 @@ void Engine::init(const std::string& title, int width, int height,
 
   // Initialize events
   s_events.MenuSelectItem = SDL_RegisterEvents(1);
+  s_events.PreviousView   = SDL_RegisterEvents(1);
 
   s_instance.reset( new Engine(configs_path, config_files, window, renderer) );
 }

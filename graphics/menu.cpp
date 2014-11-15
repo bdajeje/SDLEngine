@@ -78,6 +78,9 @@ void Menu::computeItemBorders()
 
 void Menu::newEvent( const SDL_Event& event )
 {
+  // Handle common view events
+  View::newEvent(event);
+
   // Handles only key up or down
   switch(event.type)
   {

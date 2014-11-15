@@ -14,7 +14,7 @@ class Game
 
     void setCurrentView(graphics::ViewPtr view) { m_current_view = view; }
 
-    virtual void newEvent( const SDL_Event& ) {}
+    virtual void newEvent( const SDL_Event& event);
 
   protected:
 

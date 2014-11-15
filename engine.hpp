@@ -10,6 +10,7 @@
 struct Events
 {
   Uint32 MenuSelectItem {(Uint32)-1};
+  Uint32 PreviousView   {(Uint32)-1};
 };
 
 class Engine

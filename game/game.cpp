@@ -30,3 +30,10 @@ void Game::run()
     Engine::render( m_current_view );
   }
 }
+
+void Game::newEvent( const SDL_Event& event)
+{
+  // Set previous view
+  if( event.type == Engine::events().PreviousView && m_current_view->previousView() )
+    m_current_view = m_current_view->previousView();
+}

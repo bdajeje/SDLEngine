@@ -10,7 +10,8 @@ namespace view {
 
 MainMenu::MainMenu(const graphics::Size& size)
   : PazaakMenu{ size, "main_menu/menu",
-              { utils::Translations::translate(translations::MainMenu::Play),
+              { utils::Translations::translate(translations::MainMenu::Solo),
+                utils::Translations::translate(translations::MainMenu::Multi),
                 utils::Translations::translate(translations::MainMenu::Settings),
                 utils::Translations::translate(translations::MainMenu::Quit) }, "main_menu/text",
                 Display::Vertically }

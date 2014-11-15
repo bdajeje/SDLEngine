@@ -1,5 +1,12 @@
 # Main Menu
-main_menu_play=Play
+main_menu_solo=Solo Game
+main_menu_multi=Multi Players
 main_menu_settings=Settings
 main_menu_quit=Quit
 
+# Menu
+back=Back
+
+# Option Menu
+sound=Sound
+music=Music

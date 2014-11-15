@@ -51,4 +51,23 @@ void View::newFrame()
     animation->newFrame();
 }
 
+void View::newEvent(const SDL_Event &event)
+{
+  switch(event.type)
+  {
+    case SDL_KEYDOWN:
+    {
+      if( event.key.keysym.sym == SDLK_ESCAPE )
+        previousViewEvent();
+      break;
+    }
+  }
+}
+
+void View::previousViewEvent()
+{
+  SDL_Event event {Engine::events().PreviousView};
+  SDL_PushEvent(&event);
+}
+
 }

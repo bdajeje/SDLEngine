@@ -48,7 +48,7 @@ class Menu : public graphics::View
     virtual void setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item);
 
     /* Triggered when a menu item is choosen */
-    void chooseItem();
+    virtual void chooseItem(); // \todo If bind an even to an item, no need to virtualize this function
 
     /* Handle mouse move event */
     void mouseMove();
