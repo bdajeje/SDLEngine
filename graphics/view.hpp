@@ -7,12 +7,15 @@
 
 #include <SDL2/SDL.h>
 
+#include "game/drawable_event_binder.hpp"
+#include "game/keyboard_event_binder.hpp"
 #include "graphics/animation.hpp"
 #include "graphics/drawable.hpp"
 
 namespace graphics {
 
-class View
+class View : public event::KeyboardEventBinder,
+             public event::DrawableEventBinder
 {
   public:
 
@@ -20,7 +23,6 @@ class View
     virtual ~View() = default;
 
     void render();
-    virtual void newEvent( const SDL_Event& event );
 
     const SDL_Rect& destination() const { return m_destination; }
 
@@ -32,7 +34,6 @@ class View
     void addObject(std::shared_ptr<Drawable> drawable);
     void addAnimation(std::shared_ptr<Animation> animation);
     void newFrame();
-    void previousViewEvent();
 
   private:
 

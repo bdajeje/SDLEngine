@@ -12,9 +12,10 @@ class PazaakMenu : public graphics::Menu
     PazaakMenu(const graphics::Size& size, const std::string& menu_info_file,
                const std::vector<std::string>& texts, const std::string& text_info_file, Display display);
 
-  private:
+  protected:
 
     void setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item);
+    void previousViewEvent();
 
   private:
 

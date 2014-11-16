@@ -12,15 +12,7 @@ OptionMenu::OptionMenu(const graphics::Size& size)
                 utils::Translations::translate(translations::Menu::Back)}, "main_menu/text",
               Display::Vertically}
 {
-
-}
-
-void OptionMenu::chooseItem()
-{
-  PazaakMenu::chooseItem();
-
-  if( m_selected_item_pos == 2 )
-    previousViewEvent();
+  DrawableEventBinder::bind( m_items[2], std::bind(&OptionMenu::previousViewEvent, this) );
 }
 
 }

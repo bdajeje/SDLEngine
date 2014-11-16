@@ -15,18 +15,8 @@ Pazaak::Pazaak()
 void Pazaak::newEvent(const SDL_Event &event)
 {
   // Always calls Game::newEvent to handle common game events
+  // \todo decorator pattern to avoid having to call this?
   Game::newEvent(event);
-
-  // \todo on escape key always show menu (except if current_view is the menu)
-  if( event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE )
-  {
-    if( m_current_view == m_main_menu )
-      m_main_menu->setFocusToPosition(3); // \todo This sucks hard
-    else
-      setCurrentView(m_main_menu);
-
-    return;
-  }
 
   if( event.type == Engine::events().MenuSelectItem && m_current_view == m_main_menu )
   {

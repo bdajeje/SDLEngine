@@ -10,6 +10,13 @@ class MainMenu final : public PazaakMenu
   public:
 
     MainMenu(const graphics::Size& size);
+
+  protected:
+
+    void selectQuit();
+
+    // \todo temporary - to delete
+    void sendChooseItemEvent();
 };
 
 }

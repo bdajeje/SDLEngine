@@ -16,11 +16,8 @@ void Game::run()
       if( event.type == SDL_QUIT )
         m_quit = true;
 
-      // Let child class do whatevere it wants with events
+      // Handles events
       newEvent( event );
-
-      // Give event to the current view
-      m_current_view->newEvent( event );
     }
 
     // Clear screen
@@ -33,6 +30,13 @@ void Game::run()
 
 void Game::newEvent( const SDL_Event& event)
 {
+  if( event.type == SDL_KEYDOWN )
+  {
+    // If the current view handled this event, stop propagation
+    if( m_current_view->KeyboardEventBinder::send(event.key.keysym.sym) )
+      return;
+  }
+
   // Set previous view
   if( event.type == Engine::events().PreviousView && m_current_view->previousView() )
     m_current_view = m_current_view->previousView();

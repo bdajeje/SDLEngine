@@ -59,4 +59,7 @@ HEADERS += \
     utils/configuration/configurations.hpp \
     pazaak/views/play_menu.hpp \
     pazaak/views/option_menu.hpp \
-    pazaak/views/pazaak_menu.hpp
+    pazaak/views/pazaak_menu.hpp \
+    game/event_binder.hpp \
+    game/keyboard_event_binder.hpp \
+    game/drawable_event_binder.hpp

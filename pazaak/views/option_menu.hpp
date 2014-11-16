@@ -10,10 +10,6 @@ class OptionMenu final : public PazaakMenu
   public:
 
     OptionMenu(const graphics::Size& size);
-
-  protected:
-
-    void chooseItem();
 };
 
 }

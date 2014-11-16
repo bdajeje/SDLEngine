@@ -38,7 +38,15 @@ Menu::Menu(const graphics::Size& size, const std::string& menu_info_file,
   // Compute menu item borders to speed up mouse move event (so we don't try to find over which item the mouse is if not inside those borders)
   computeItemBorders();
 
+  // Set defaut focus
   setFocus( selectedItem() );
+
+  // Bind events
+  KeyboardEventBinder::bind(SDLK_UP, std::bind(&Menu::keyboardSelectionUp, this));
+  KeyboardEventBinder::bind(SDLK_DOWN, std::bind(&Menu::keyboardSelectionDown, this));
+  KeyboardEventBinder::bind(SDLK_RETURN, std::bind(&Menu::chooseItem, this));
+  KeyboardEventBinder::bind(SDL_MOUSEMOTION, std::bind(&Menu::mouseMove, this));
+  KeyboardEventBinder::bind(SDL_MOUSEBUTTONUP, std::bind(&Menu::mouseClick, this));
 }
 
 void Menu::computeItemBorders()
@@ -73,28 +81,6 @@ void Menu::computeItemBorders()
     x_last_point = x_first_point + item->width();
     if( x_last_point > m_item_max_limits.x )
       m_item_max_limits.x = x_last_point;
-  }
-}
-
-void Menu::newEvent( const SDL_Event& event )
-{
-  // Handle common view events
-  View::newEvent(event);
-
-  // Handles only key up or down
-  switch(event.type)
-  {
-    case SDL_KEYDOWN:
-    {
-      if( event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_DOWN )
-        keyboardChangeSelection(event.key.keysym.sym);
-      else if( event.key.keysym.sym == SDLK_RETURN )
-        chooseItem();
-
-      break;
-    }
-    case SDL_MOUSEMOTION: mouseMove(); break;
-    case SDL_MOUSEBUTTONUP: mouseClick(); break;
   }
 }
 
@@ -149,19 +135,6 @@ void Menu::mouseClick()
     chooseItem();
 }
 
-//size_t Menu::itemOffset(const std::shared_ptr<graphics::Text>& wanted_item)
-//{
-//  size_t offset = 0;
-//  size_t size   = m_items.size();
-//  for( ; offset < size; ++offset )
-//  {
-//    if( wanted_item == m_items[offset] )
-//      break;
-//  }
-
-//  return offset;
-//}
-
 void Menu::chooseItem()
 {
   // Play choose item sound if any
@@ -169,37 +142,40 @@ void Menu::chooseItem()
     sounds::SoundsManager::playSound(m_select_item_sound);
 
   // Send event
-  SDL_Event event {Engine::events().MenuSelectItem};
-  SDL_PushEvent(&event);
+  DrawableEventBinder::send( selectedItem() );
 }
 
-void Menu::keyboardChangeSelection(SDL_Keycode key)
+void Menu::keyboardSelectionDown()
+{
+  if( !allowKeyboardInput() )
+    return;
+
+  m_selected_item_pos++;
+  if( m_selected_item_pos >= m_items.size())
+    m_selected_item_pos = 0;
+
+  setFocus( selectedItem() );
+}
+
+void Menu::keyboardSelectionUp()
+{
+  if( !allowKeyboardInput() )
+    return;
+
+  m_selected_item_pos = (m_selected_item_pos == 0) ? m_items.size() - 1 : m_selected_item_pos - 1;
+
+  setFocus( selectedItem() );
+}
+
+bool Menu::allowKeyboardInput()
 {
   // For item selection change, check the last time we did it to prevent too fast updates
   const auto now = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() );
   if( now - last_keyboard_change < mimimum_keyboard_time_repeat )
-    return;
+    return false;
 
   last_keyboard_change = now;
-
-  switch(key)
-  {
-    case SDLK_DOWN:
-      m_selected_item_pos++;
-      if( m_selected_item_pos >= m_items.size())
-        m_selected_item_pos = 0;
-      break;
-    case SDLK_UP:
-      if( m_selected_item_pos == 0)
-        m_selected_item_pos = m_items.size() - 1;
-      else
-        m_selected_item_pos--;
-      break;
-    default:
-      return;
-  }
-
-  setFocus( selectedItem() );
+  return true;
 }
 
 const std::shared_ptr<graphics::Text>& Menu::selectedItem() const
