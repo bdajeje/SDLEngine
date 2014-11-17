@@ -112,12 +112,12 @@ size_t Menu::itemUnderMouse() const
   return m_items.size() + 1;
 }
 
-int Menu::itemPosX(const std::shared_ptr<graphics::Text>& item) const
+int Menu::itemPosX(const std::shared_ptr<graphics::Drawable>& item) const
 {
   return m_menu->posX() + item->posX();
 }
 
-int Menu::itemPosY(const std::shared_ptr<graphics::Text>& item) const
+int Menu::itemPosY(const std::shared_ptr<graphics::Drawable>& item) const
 {
   return m_menu->posY() + item->posY();
 }
@@ -178,7 +178,7 @@ bool Menu::allowKeyboardInput()
   return true;
 }
 
-const std::shared_ptr<graphics::Text>& Menu::selectedItem() const
+const std::shared_ptr<graphics::Drawable> Menu::selectedItem() const
 {
   return m_items[m_selected_item_pos];
 }
@@ -198,7 +198,7 @@ void Menu::setFocusToPosition(size_t item_offest)
   setFocus( m_items[item_offest] );
 }
 
-void Menu::setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item)
+void Menu::setFocus(const std::shared_ptr<graphics::Drawable> newly_selected_item)
 {
   // Update selected item UI
   for( auto& item : m_items )

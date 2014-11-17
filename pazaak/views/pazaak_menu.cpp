@@ -27,7 +27,7 @@ PazaakMenu::PazaakMenu(const graphics::Size& size, const std::string& menu_info_
   KeyboardEventBinder::bind( SDLK_ESCAPE, std::bind(&PazaakMenu::previousViewEvent, this) );
 }
 
-void PazaakMenu::setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item)
+void PazaakMenu::setFocus(const std::shared_ptr<graphics::Drawable> newly_selected_item)
 {
   Menu::setFocus(newly_selected_item);
 

@@ -22,7 +22,7 @@ class Menu : public graphics::View
          const std::vector<std::string>& texts, const std::string& text_info_file,
          Display display = Display::Vertically, const std::string& background_info_file = {});
 
-    const std::shared_ptr<graphics::Text>& selectedItem() const;
+    const std::shared_ptr<Drawable> selectedItem() const;
     size_t selectedPosition() const { return m_selected_item_pos; }
 
     void setChangeItemSound( const std::string& file ) { m_change_selection_sound = file; }
@@ -39,7 +39,7 @@ class Menu : public graphics::View
     bool allowKeyboardInput();
 
     /* When selected menu item changes, call this method to update the UI */
-    virtual void setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item);
+    virtual void setFocus(const std::shared_ptr<Drawable> newly_selected_item);
 
     /* Triggered when a menu item is choosen */
     void chooseItem(); // \todo If bind an even to an item, no need to virtualize this function
@@ -56,13 +56,13 @@ class Menu : public graphics::View
     size_t itemUnderMouse() const;
 
     /* Get item position taking into account the menu position where the item is */
-    int itemPosX(const std::shared_ptr<graphics::Text>& item) const;
-    int itemPosY(const std::shared_ptr<graphics::Text>& item) const;
+    int itemPosX(const std::shared_ptr<graphics::Drawable>& item) const;
+    int itemPosY(const std::shared_ptr<graphics::Drawable>& item) const;
 
   protected:
 
     std::shared_ptr<graphics::VLayout> m_menu;
-    std::vector<std::shared_ptr<graphics::Text>> m_items;
+    std::vector<std::shared_ptr<graphics::Drawable>> m_items;
 
     // Currently selected/focused item position in m_items
     size_t m_selected_item_pos {0};

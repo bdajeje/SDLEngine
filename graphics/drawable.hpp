@@ -33,6 +33,7 @@ class Drawable
     virtual ~Drawable() = default;
 
     virtual void draw();
+    virtual void setSelected(bool /*selected*/) {}
 
     void setPosition(const Position& position);
     void setPosition(int x, int y);

@@ -14,7 +14,7 @@ class PazaakMenu : public graphics::Menu
 
   protected:
 
-    void setFocus(const std::shared_ptr<graphics::Text>& newly_selected_item);
+    virtual void setFocus(const std::shared_ptr<graphics::Drawable> newly_selected_item);
     void previousViewEvent();
 
   private:
