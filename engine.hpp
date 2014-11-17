@@ -7,11 +7,14 @@
 #include "graphics/size.hpp"
 #include "graphics/view.hpp"
 
-struct Events
+enum class Event
 {
-  Uint32 MenuSelectItem {(Uint32)-1};
-  Uint32 PreviousView   {(Uint32)-1};
+  MenuSelectItem,
+  PreviousView,
+  ExitApplication
 };
+
+typedef Uint32 EventID;
 
 class Engine
 {
@@ -33,6 +36,7 @@ class Engine
 
     // Events
     static const Events& events() { return s_events; }
+    static void registerEvent(Event event, EventID id) { s_events[event] = id; }
 
   private:
 
@@ -49,7 +53,7 @@ class Engine
     static std::unique_ptr<Engine> s_instance;
 
     // Specific events
-    static Events s_events;
+    static std::map<Event, EventID> s_events;
 };
 
 #endif // ENGINE_HPP

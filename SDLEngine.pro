@@ -62,4 +62,5 @@ HEADERS += \
     pazaak/views/pazaak_menu.hpp \
     game/event_binder.hpp \
     game/keyboard_event_binder.hpp \
-    game/drawable_event_binder.hpp
+    game/drawable_event_binder.hpp \
+    pazaak/events.hpp

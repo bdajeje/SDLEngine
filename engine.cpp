@@ -79,8 +79,9 @@ void Engine::init(const std::string& title, int width, int height,
   }
 
   // Initialize events
-  s_events.MenuSelectItem = SDL_RegisterEvents(1);
-  s_events.PreviousView   = SDL_RegisterEvents(1);
+  s_events.MenuSelectItem  = SDL_RegisterEvents(1);
+  s_events.PreviousView    = SDL_RegisterEvents(1);
+  s_events.ExitApplication = SDL_RegisterEvents(1);
 
   s_instance.reset( new Engine(configs_path, config_files, window, renderer) );
 }
@@ -112,6 +113,11 @@ void Engine::clean()
 
   SDL_DestroyRenderer( s_instance->m_renderer );
   SDL_DestroyWindow( s_instance->m_window );
+}
+
+void Engine::registerEvent(Uint32 event, )
+{
+
 }
 
 void Engine::clearScreen()

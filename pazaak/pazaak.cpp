@@ -1,4 +1,5 @@
 #include "pazaak.hpp"
+#include "pazaak/events.hpp"
 #include "pazaak/views/main_menu.hpp"
 #include "pazaak/views/play_menu.hpp"
 #include "pazaak/views/option_menu.hpp"
@@ -10,6 +11,11 @@ Pazaak::Pazaak()
   m_main_menu = std::make_shared<view::MainMenu>(Engine::windowSize());
 
   setCurrentView(m_main_menu);
+
+  // Game specific events
+  Engine::registerEvent( Event::ShowSoloView, SDL_RegisterEvents(1));
+  Engine::registerEvent( Event::ShowMultiView, SDL_RegisterEvents(1));
+  Engine::registerEvent( Event::ShowSettingsView, SDL_RegisterEvents(1));
 }
 
 void Pazaak::newEvent(const SDL_Event &event)
@@ -18,18 +24,17 @@ void Pazaak::newEvent(const SDL_Event &event)
   // \todo decorator pattern to avoid having to call this?
   Game::newEvent(event);
 
-  if( event.type == Engine::events().MenuSelectItem && m_current_view == m_main_menu )
+  // Game specific events
+  switch( event.type )
   {
-    // \todo I hate those hardcoded numbers, do something about it!
-    switch( m_main_menu->selectedPosition() )
-    {
-      case 0:
-        showPlayMenu(); break;
-      case 2:
-        showOptionMenu(); break;
-      case 3:
-        quit(); break;
-    }
+    case ShowSoloView:
+      showPlayMenu(); break;
+    case ShowMultiView:
+      showMultiMenu(); break;
+    case ShowSettingsView:
+      showOptionMenu(); break;
+    case QuitApplication:
+      quit(); break;
   }
 }
 
@@ -43,7 +48,6 @@ void Pazaak::showPlayMenu()
 
   setCurrentView(m_play_menu);
 }
-
 
 void Pazaak::showOptionMenu()
 {
