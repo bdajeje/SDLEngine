@@ -1,6 +1,7 @@
 #include "main_menu.hpp"
 
 #include "engine.hpp"
+#include "defines.hpp"
 #include "sounds/sounds_manager.hpp"
 #include "utils/translations.hpp"
 
@@ -10,15 +11,20 @@
 namespace view {
 
 MainMenu::MainMenu(const graphics::Size& size)
-  : PazaakMenu{ size, "main_menu/menu",
-              { utils::Translations::translate(translations::MainMenu::Solo),
-                utils::Translations::translate(translations::MainMenu::Multi),
-                utils::Translations::translate(translations::MainMenu::Settings),
-                utils::Translations::translate(translations::MainMenu::Quit) }, "main_menu/text",
-                Display::Vertically }
+  : PazaakMenu{ size, "main_menu/menu", Display::Vertically }
 {
   // Play a nice music :)
-  sounds::SoundsManager::playMusic( music::MainMenu, -1 );
+  Engine::sounds().playMusic( music::MainMenu, -1 );
+
+  utils::Configuration text_info {IMAGE_INFO_PATH, {"main_menu/text"}};
+  static const std::vector<std::string> texts { Engine::translations().get(translations::MainMenu::Solo),
+                                                Engine::translations().get(translations::MainMenu::Multi),
+                                                Engine::translations().get(translations::MainMenu::Settings),
+                                                Engine::translations().get(translations::MainMenu::Quit) };
+  for( const auto& text : texts )
+    addMenuItem( std::make_shared<graphics::Text>(text, text_info) );
+
+  setFocus(m_items.front(), false);
 
   // Key events
   KeyboardEventBinder::bind( SDLK_ESCAPE, std::bind(&MainMenu::selectQuit, this) );

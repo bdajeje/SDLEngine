@@ -4,16 +4,6 @@
 
 namespace sounds {
 
-std::unique_ptr<SoundsManager> SoundsManager::s_instance;
-
-void SoundsManager::init(const std::string& musics_path, const std::string& sounds_path)
-{
-  if(s_instance)
-    return;
-
-  s_instance.reset( new SoundsManager(musics_path, sounds_path) );
-}
-
 SoundsManager::SoundsManager(const std::string& musics_path, const std::string& sounds_path)
   : m_musics_path(musics_path)
   , m_sounds_path(sounds_path)
@@ -21,23 +11,18 @@ SoundsManager::SoundsManager(const std::string& musics_path, const std::string& 
 
 SoundsManager::~SoundsManager()
 {
-  clean();
-}
-
-void SoundsManager::clean()
-{
-  for( auto music : s_instance->m_musics )
+  for( auto music : m_musics )
     Mix_FreeMusic( music.second );
-  s_instance->m_musics.clear();
+  m_musics.clear();
 
-  for( auto sound : s_instance->m_sounds )
+  for( auto sound : m_sounds )
     Mix_FreeChunk( sound.second );
-  s_instance->m_sounds.clear();
+  m_sounds.clear();
 }
 
 void SoundsManager::playMusic(const std::string& music_path, int repeat)
 {
-  Mix_PlayMusic( instance()->getMusic(music_path), repeat );
+  Mix_PlayMusic( getMusic(music_path), repeat );
 }
 
 void SoundsManager::setMusicVolume(short volume)
@@ -48,8 +33,8 @@ void SoundsManager::setMusicVolume(short volume)
 void SoundsManager::playSound(const std::string& sound_path, int repeat)
 {
   // We need to specify the sound volume each time we play it
-  auto sound = instance()->getSound(sound_path);
-  Mix_VolumeChunk(sound, s_instance->m_sound_volume);
+  auto sound = getSound(sound_path);
+  Mix_VolumeChunk(sound, m_sound_volume);
   Mix_PlayChannel( -1, sound, repeat );
 }
 
@@ -65,22 +50,22 @@ void SoundsManager::resumeMusic()
 
 Mix_Music* SoundsManager::getMusic(const std::string &music_path)
 {
-  auto found = s_instance->m_musics.find(music_path);
-  if(found != s_instance->m_musics.end())
+  auto found = m_musics.find(music_path);
+  if(found != m_musics.end())
     return found->second;
 
   // Image not yet loaded
-  return s_instance->loadMusic(music_path);
+  return loadMusic(music_path);
 }
 
 Mix_Chunk* SoundsManager::getSound(const std::string &sound_path)
 {
-  auto found = s_instance->m_sounds.find(sound_path);
-  if(found != s_instance->m_sounds.end())
+  auto found = m_sounds.find(sound_path);
+  if(found != m_sounds.end())
     return found->second;
 
   // Image not yet loaded
-  return s_instance->loadSound(sound_path);
+  return loadSound(sound_path);
 }
 
 Mix_Music* SoundsManager::loadMusic(const std::string& path)

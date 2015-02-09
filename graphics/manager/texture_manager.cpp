@@ -7,48 +7,28 @@
 
 namespace graphics {
 
-std::unique_ptr<TextureManager> TextureManager::s_instance;
-
-void TextureManager::init(const std::string &textures_path)
-{
-  if(s_instance)
-    return;
-
-  s_instance.reset( new TextureManager(textures_path) );
-}
-
 TextureManager::TextureManager(const std::string& textures_path)
   : m_textures_path(textures_path)
 {}
 
 TextureManager::~TextureManager()
 {
-  clean();
-}
-
-void TextureManager::clean()
-{
   // Delete all textures
-  for(auto texture : s_instance->m_textures)
+  for(auto texture : m_textures)
     SDL_DestroyTexture(texture.second);
-  s_instance->m_textures.clear();
+
+  m_textures.clear();
 }
 
 SDL_Texture* TextureManager::get(const std::string& path)
 {
-  if(!s_instance)
-  {
-    LOG(ERROR) << "Trying to use a NULL texture manager!";
-    return nullptr;
-  }
-
   // Find already loaded image
-  auto found = s_instance->m_textures.find(path);
-  if( found != s_instance->m_textures.end() )
+  auto found = m_textures.find(path);
+  if( found != m_textures.end() )
     return found->second;
 
   // Image not yet loaded
-  return s_instance->loadTexture(path);
+  return loadTexture(path);
 }
 
 SDL_Texture* TextureManager::loadTexture(const std::string& path)

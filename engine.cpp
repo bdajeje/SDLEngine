@@ -3,32 +3,19 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "graphics/manager/font_manager.hpp"
-#include "graphics/manager/texture_manager.hpp"
-#include "sounds/sounds_manager.hpp"
 #include "utils/configuration/configurations.hpp"
 #include "utils/logging/easylogging++.h"
-#include "utils/translations.hpp"
 
 std::unique_ptr<Engine> Engine::s_instance;
-Events Engine::s_events;
 
-void Engine::init(const std::string& title, int width, int height,
-                  const std::string& configs_path, const std::vector<std::string>& config_files,
-                  const std::string& translations_path, const std::string& language_file,
-                  const std::string& images_path, const std::string& fonts_path,
-                  const std::string& musics_path, const std::string& sounds_path)
+void Engine::init(const EngineConfiguration& configurations)
 {
+  // Don't initialize twice
   if( s_instance )
   {
     LOG(ERROR) << "Engine already initialized";
     return;
   }
-
-  utils::Translations::init(translations_path, language_file);
-  graphics::TextureManager::init(images_path);
-  graphics::FontManager::init(fonts_path);
-  sounds::SoundsManager::init(musics_path, sounds_path);
 
   // Initialize SDL
   if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
@@ -38,7 +25,8 @@ void Engine::init(const std::string& title, int width, int height,
   }
 
   // Create window
-  auto window = SDL_CreateWindow( title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN );
+  auto window = SDL_CreateWindow( configurations.title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                  configurations.size.w, configurations.size.h, SDL_WINDOW_SHOWN );
   if( window == NULL )
   {
     LOG(ERROR) << "Window could not be created! SDL_Error: " << SDL_GetError() << "\n";
@@ -56,7 +44,7 @@ void Engine::init(const std::string& title, int width, int height,
   // Initialize renderer color
   SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
-  //Initialize PNG loading
+  // Initialize PNG loading
   int imgFlags = IMG_INIT_PNG;
   if( !( IMG_Init( imgFlags ) & imgFlags ) )
   {
@@ -78,40 +66,44 @@ void Engine::init(const std::string& title, int width, int height,
     throw std::exception();
   }
 
-  // Initialize events
-  s_events.MenuSelectItem = SDL_RegisterEvents(1);
-  s_events.PreviousView   = SDL_RegisterEvents(1);
-
-  s_instance.reset( new Engine(configs_path, config_files, window, renderer) );
+  s_instance.reset( new Engine(configurations, window, renderer) );
 }
 
-Engine::Engine(const std::string& configs_path, const std::vector<std::string>& config_files, SDL_Window* window, SDL_Renderer* renderer)
-  : m_configurations{ configs_path, config_files }
-  , m_window{window}
-  , m_renderer{renderer}
+Engine::Engine(const EngineConfiguration& configurations, SDL_Window* window, SDL_Renderer* renderer)
+  : m_configurations {configurations.configs_path}
+  , m_translations_manager {configurations.translations_path, m_configurations.get(config::translation::Language)}
+  , m_textures_manager {configurations.images_path}
+  , m_fonts_manager {configurations.fonts_path}
+  , m_sounds_manager {configurations.musics_path, configurations.sounds_path}
+  , m_window {window}
+  , m_renderer {renderer}
 {
   try
   {
     // Apply last time used sound volume
-    sounds::SoundsManager::setSoundVolume( std::stoi(m_configurations.get( config::sound::Volume )) );
+    m_sounds_manager.setSoundVolume( std::stoi(m_configurations.get( config::sound::Volume )) );
 
     // Apply last time used music volume
-    sounds::SoundsManager::setMusicVolume( std::stoi(m_configurations.get( config::music::Volume )) );
+    m_sounds_manager.setMusicVolume( std::stoi(m_configurations.get( config::music::Volume )) );
   }
   catch(const std::exception& e)
   {
     LOG(ERROR) << "Bad engine configurations: " << e.what();
   }
+
+  // Initialize events
+  m_events.MenuSelectItem = SDL_RegisterEvents(1);
+  m_events.PreviousView   = SDL_RegisterEvents(1);
 }
 
 void Engine::clean()
 {
-  graphics::TextureManager::clean();
-  graphics::FontManager::clean();
-  sounds::SoundsManager::clean();
-
   SDL_DestroyRenderer( s_instance->m_renderer );
   SDL_DestroyWindow( s_instance->m_window );
+
+  TTF_Quit();
+  IMG_Quit();
+  SDL_Quit();
 }
 
 void Engine::clearScreen()
@@ -127,7 +119,7 @@ void Engine::render( graphics::ViewPtr view )
     return;
   }
 
-  view->render();
+  view->draw();
   SDL_RenderPresent( s_instance->m_renderer );
 }
 
@@ -144,3 +136,4 @@ graphics::Position Engine::mousePosition()
   SDL_GetMouseState( &position.x, &position.y );
   return position;
 }
+

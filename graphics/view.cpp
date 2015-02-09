@@ -5,11 +5,12 @@
 
 namespace graphics {
 
-View::View(const Position& position, const Size& size)
-  : m_destination{ position.x, position.y, size.w, size.h }
+View::View(SDL_Texture* background, const Position& position, const Size& size)
+  : Drawable(background, position, size)
+  , m_destination{ position.x, position.y, size.w, size.h }
 {}
 
-void View::render()
+void View::draw()
 {
   newFrame();
 

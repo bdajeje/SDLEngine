@@ -24,9 +24,10 @@ SOURCES += main.cpp \
     graphics/menu.cpp \
     pazaak/views/play_menu.cpp \
     pazaak/views/option_menu.cpp \
-    pazaak/views/pazaak_menu.cpp
+    pazaak/views/pazaak_menu.cpp \
+    graphics/progress_bar.cpp
 
-LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lboost_filesystem -lboost_system
+LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lboost_filesystem -lboost_regex -lboost_system
 
 QMAKE_CXXFLAGS += -std=c++11
 
@@ -62,4 +63,5 @@ HEADERS += \
     pazaak/views/pazaak_menu.hpp \
     game/event_binder.hpp \
     game/keyboard_event_binder.hpp \
-    game/drawable_event_binder.hpp
+    game/drawable_event_binder.hpp \
+    graphics/progress_bar.hpp

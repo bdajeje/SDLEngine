@@ -13,23 +13,19 @@ class SoundsManager
 {
   public:
 
-    static void init(const std::string& musics_path, const std::string& sounds_path);
-    static std::unique_ptr<SoundsManager>& instance() { return s_instance; }
+    SoundsManager(const std::string& musics_path, const std::string& sounds_path);
+
     ~SoundsManager();
 
-    static void playMusic(const std::string& music_path, int repeat = 0);
-    static void pauseMusic();
-    static void resumeMusic();
-    static void setMusicVolume(short volume);
+    void playMusic(const std::string& music_path, int repeat = 0);
+    void pauseMusic();
+    void resumeMusic();
+    void setMusicVolume(short volume);
 
-    static void playSound(const std::string& sound_path, int repeat = 0);
-    static void setSoundVolume(short volume) { s_instance->m_sound_volume = volume; }
-
-    static void clean();
+    void playSound(const std::string& sound_path, int repeat = 0);
+    void setSoundVolume(short volume) { m_sound_volume = volume; }
 
   private:
-
-    SoundsManager(const std::string& musics_path, const std::string& sounds_path);
 
     Mix_Music* getMusic(const std::string& music_path);
     Mix_Chunk* getSound(const std::string& sound_path);
@@ -45,8 +41,6 @@ class SoundsManager
     std::map<std::string, Mix_Chunk*> m_sounds;
 
     short m_sound_volume {50};
-
-    static std::unique_ptr<SoundsManager> s_instance;
 };
 
 }

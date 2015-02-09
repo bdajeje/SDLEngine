@@ -15,12 +15,17 @@ class Arguments
 {
   public:
 
+    /* Constructor
+     * \params argc - from main
+     * \params argv - from main
+     */
     Arguments(int argc, char* argv[]);
 
-    // Get an argument
-    // \param position of the argument in the argument list
-    // \return Converted argument to T type at given position
-    // \throw if position out of bound or can't convert to desired type
+    /* Get an argument
+     * \param position of the argument in the argument list
+     * \return Converted argument to T type at given position
+     * /throw if position out of bound or can't convert to desired type
+     */
     template<class T>
     T get(size_t position) const
     {

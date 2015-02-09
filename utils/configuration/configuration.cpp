@@ -7,13 +7,21 @@
 
 namespace utils {
 
-Configuration::Configuration(std::string config_path, const std::vector<std::string>& files)
-{
-  if( config_path.back() != '/' )
-    config_path += '/';
+Configuration::Configuration(const std::string& dir_path)
+  : Configuration( utils::file::listFilesInDir(dir_path, ".*\.conf") )
+{}
 
-  for( const auto& file : files )
-    loadConfig( config_path + file );
+Configuration::Configuration(const std::vector<std::string>& filepaths)
+{
+  for( const auto& file : filepaths )
+    loadConfig( file );
+}
+
+Configuration::Configuration(std::string filepath, const std::vector<std::string>& filenames)
+{
+  filepath = utils::file::ensureDirEnd(filepath);
+  for( const auto& filename : filenames )
+    loadConfig( filepath + filename );
 }
 
 void Configuration::loadConfig(const std::string& file_path)

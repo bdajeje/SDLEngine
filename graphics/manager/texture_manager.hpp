@@ -13,17 +13,13 @@ class TextureManager final
 {
   public:
 
-    static void init(const std::string& textures_path);
+    TextureManager(const std::string& textures_path);
 
     ~TextureManager();
 
-    static SDL_Texture* get(const std::string& path);
-
-    static void clean();
+    SDL_Texture* get(const std::string& path);
 
   private:
-
-    TextureManager(const std::string& textures_path);
 
     SDL_Texture* loadTexture(const std::string& path);
 
@@ -31,8 +27,6 @@ class TextureManager final
 
     std::string m_textures_path;
     std::map<std::string, SDL_Texture*> m_textures;
-
-    static std::unique_ptr<TextureManager> s_instance;
 };
 
 }

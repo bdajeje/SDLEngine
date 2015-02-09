@@ -26,7 +26,7 @@ Drawable::Drawable(const utils::Configuration& info, const SDL_Rect& parent)
     // Texture
     const std::string& texture_path = info.get( info::Texture );
     if(!texture_path.empty())
-      m_texture = graphics::TextureManager::get(texture_path);
+      m_texture = Engine::textures().get(texture_path);
   }
   catch(const std::exception& e)
   {

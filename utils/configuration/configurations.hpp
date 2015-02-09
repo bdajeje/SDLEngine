@@ -13,6 +13,10 @@ namespace config {
     const std::string Volume {"music_volume"};
   }
 
+  namespace translation {
+    const std::string Language {"language"};
+  }
+
 }
 
 #endif // CONFIGURATIONS_HPP

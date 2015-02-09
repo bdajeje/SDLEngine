@@ -11,11 +11,27 @@ class Configuration
 {
   public:
 
-    Configuration(std::string config_path, const std::vector<std::string>& files);
+    /*! Default constructor */
+    Configuration() = default;
+
+    /*! Constructor, loads all configs file under a specific directory
+     * \param dir_path - directory path where to find configuration files to load
+     * \note configuration files have '.conf' extension
+     */
+    Configuration(const std::string& dir_path);
+
+    /*! Constructor, loads several files from paths
+     * \param filepaths - to load
+     */
+    Configuration(const std::vector<std::string>& filepaths);
+
+    /*! Constructor, loads several files from file paths
+     * \param filepath  - common filepath for all input files
+     * \param filenames - names of files to load
+     */
+    Configuration(std::string filepath, const std::vector<std::string>& filenames);
 
     const std::string& get(const std::string& config_key) const;
-
-  private:
 
     void loadConfig(const std::string& file_path);
 

@@ -9,21 +9,17 @@
 
 namespace graphics {
 
-class FontManager
+class FontManager final
 {
   public:
 
-    static void init(const std::string& fonts_path);
+    FontManager(const std::string& fonts_path);
 
     ~FontManager();
 
-    static TTF_Font* get(const std::string& path, int size);
-
-    static void clean();
+    TTF_Font* get(const std::string& path, int size);
 
   private:
-
-    FontManager(const std::string& fonts_path);
 
     TTF_Font* loadFont(const std::string& path, int size, const std::string& font_key);
     static std::string fontKey(const std::string& path, int size);
@@ -32,8 +28,6 @@ class FontManager
 
     std::string m_fonts_path;
     std::map<std::string, TTF_Font*> m_fonts;
-
-    static std::unique_ptr<FontManager> s_instance;
 };
 
 }

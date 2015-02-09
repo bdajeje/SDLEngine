@@ -1,33 +1,16 @@
 #include "translations.hpp"
 
 #include "utils/logging/easylogging++.h"
+#include "utils/files.hpp"
 
 namespace utils {
 
-std::unique_ptr<Translations> Translations::s_instance;
-
-void Translations::init(const std::string &translations_path, const std::string &language_file)
+Translations::Translations(const std::string& translations_path, const std::string& current_language)
+  : m_current_language {current_language}
 {
-  if(s_instance)
-    return;
-
-  s_instance.reset( new Translations(translations_path, language_file) );
-}
-
-Translations::Translations(const std::string& translations_path, const std::string &language_file)
-  : Configuration{ translations_path, {language_file} }
-{}
-
-const std::string& Translations::translate(const std::string& key)
-{
-  if(!s_instance)
-  {
-    LOG(ERROR) << "Can't translate with no Translations manager!";
-    static const std::string error {};
-    return error;
-  }
-
-  return s_instance->get(key);
+  const std::string translation_file_path {utils::file::ensureDirEnd(translations_path) + current_language + ".conf"};
+  LOG(DEBUG) << "Loading translations from " << translation_file_path;
+  loadConfig( translation_file_path );
 }
 
 }

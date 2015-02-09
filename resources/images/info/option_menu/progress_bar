@@ -1,0 +1,4 @@
+min_value=0
+max_value=100
+current_value=50
+texture=option_menu/progress_bar.png

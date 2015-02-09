@@ -1,5 +1,6 @@
 #include "files.hpp"
 
+#include <boost/regex.hpp>
 #include <iostream>
 #include <fstream>
 
@@ -47,6 +48,36 @@ bool create( const std::string& filepath, const std::string& content, bool overr
   new_file.close();
 
   return true;
+}
+
+std::vector<std::string> listFilesInDir(const std::string& dir_path, const std::string& regex_str)
+{
+  namespace fs = boost::filesystem;
+  fs::path directory {dir_path};
+  std::vector<std::string> results;
+
+  if( !fs::is_directory(directory) )
+    return results;
+
+  const boost::regex regex(regex_str);
+  fs::directory_iterator end_iter;
+
+  for( fs::directory_iterator dir_iter(directory); dir_iter != end_iter; ++dir_iter)
+  {
+    if(fs::is_regular_file(dir_iter->status()) )
+    {
+      const std::string& file_path = dir_iter->path().string();
+      if( boost::regex_match( file_path, regex ) )
+        results.push_back(file_path);
+    }
+  }
+
+  return results;
+}
+
+std::string ensureDirEnd(std::string filepath)
+{
+  return (filepath.back() == '/') ? filepath : filepath + '/';
 }
 
 } // namespace file

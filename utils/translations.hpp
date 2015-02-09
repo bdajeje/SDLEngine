@@ -1,28 +1,21 @@
 #ifndef TRANSLATIONS_HPP
 #define TRANSLATIONS_HPP
 
-#include <map>
-#include <memory>
 #include <string>
 
 #include "utils/configuration/configuration.hpp"
 
 namespace utils {
 
-class Translations : public Configuration
+class Translations final : public Configuration
 {
   public:
 
-    static void init(const std::string& translations_path, const std::string& language);
-    static const std::string& translate(const std::string& key);
+    Translations(const std::string& translations_path, const std::string& current_language = "en");
 
   private:
 
-    Translations(const std::string& translations_path, const std::string& language);
-
-  private:
-
-    static std::unique_ptr<Translations> s_instance;
+    std::string m_current_language;
 };
 
 }

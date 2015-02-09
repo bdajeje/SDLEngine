@@ -1,6 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-
 #include "engine.hpp"
 #include "utils/arguments/arguments.hpp"
 #include "utils/logging/easylogging++.h"
@@ -18,13 +15,11 @@ int main( int argc, char* argv[] )
   // Parse args
   auto args = utils::Arguments{argc, argv};
 
-  // Init the engine
-  Engine::init ( "Pazaak", args.get(WINDOW_WIDTH, 800), args.get(WINDOW_HEIGHT, 600),
-                 "resources/configurations/", std::vector<std::string>{"configurations"},
-                 "resources/translations/", "en",
-                 "resources/images/", "resources/fonts/",
-                 "resources/musics/", "resources/sounds/"
-                );
+  // Init the game engine
+  EngineConfiguration configs {"Pazaak", "resources/configurations/", "resources/translations/", "resources/images/",
+                               "resources/fonts/", "resources/musics/", "resources/sounds/",
+                               graphics::Size{args.get<int>(WINDOW_WIDTH, 800), args.get<int>(WINDOW_HEIGHT, 600)} };
+  Engine::init(configs);
 
   // Start game
   Pazaak pazaak;
@@ -32,9 +27,6 @@ int main( int argc, char* argv[] )
 
   // Quit
   Engine::clean();
-  TTF_Quit();
-  IMG_Quit();
-  SDL_Quit();
 
   return EXIT_SUCCESS;
 }

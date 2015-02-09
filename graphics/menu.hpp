@@ -18,9 +18,7 @@ class Menu : public graphics::View
 
     enum class Display { Vertically, Horizontally };
 
-    Menu(const graphics::Size& size, const std::string& menu_info_file,
-         const std::vector<std::string>& texts, const std::string& text_info_file,
-         Display display = Display::Vertically, const std::string& background_info_file = {});
+    Menu(const graphics::Size& size, const std::string& menu_info_file, Display display = Display::Vertically, const std::string& background_info_file = {});
 
     const std::shared_ptr<Drawable> selectedItem() const;
     size_t selectedPosition() const { return m_selected_item_pos; }
@@ -28,6 +26,8 @@ class Menu : public graphics::View
     void setChangeItemSound( const std::string& file ) { m_change_selection_sound = file; }
     void setChooseItemSound( const std::string& file ) { m_select_item_sound = file; }
     void setFocusToPosition( size_t item_offest );
+
+    void addMenuItem(const std::shared_ptr<graphics::Drawable> item);
 
   protected:
 
@@ -39,7 +39,7 @@ class Menu : public graphics::View
     bool allowKeyboardInput();
 
     /* When selected menu item changes, call this method to update the UI */
-    virtual void setFocus(const std::shared_ptr<Drawable> newly_selected_item);
+    virtual void setFocus(const std::shared_ptr<Drawable> newly_selected_item, bool play_sound = true);
 
     /* Triggered when a menu item is choosen */
     void chooseItem(); // \todo If bind an even to an item, no need to virtualize this function

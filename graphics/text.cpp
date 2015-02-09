@@ -76,7 +76,7 @@ void Text::clean( SDL_Texture* texture )
 
 SDL_Texture* Text::createText( const std::string& text, const std::string& font_file, int font_size, const SDL_Color& color )
 {
-  SDL_Surface* text_surface = TTF_RenderText_Solid( graphics::FontManager::get(font_file, font_size), text.c_str(), color );
+  SDL_Surface* text_surface = TTF_RenderText_Solid( Engine::fonts().get(font_file, font_size), text.c_str(), color );
   if(!text_surface)
     LOG(ERROR) << "Can't load surface from font: " + font_file;
 

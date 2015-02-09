@@ -30,6 +30,19 @@ inline bool exists(const std::string& filepath) { return boost::filesystem::exis
  */
 bool create( const std::string& filepath, const std::string& content, bool override );
 
+/*! List existing files in a directory filtered by a regex
+ *  \param dir_path  - path to a directory to list
+ *  \param regex_str - regex to filter files
+ *  \returns a vector of file fullpaths
+ */
+std::vector<std::string> listFilesInDir(const std::string& dir_path, const std::string& regex_str);
+
+/*! Takes a input string and ensure it ends with a '/'
+ *  \param filepath - to update
+ *  \returns returns filepath input with a '/' at the end
+ */
+std::string ensureDirEnd(std::string filepath);
+
 } // namespace file
 } // namespace utils
 

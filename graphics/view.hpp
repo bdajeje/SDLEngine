@@ -14,15 +14,16 @@
 
 namespace graphics {
 
-class View : public event::KeyboardEventBinder,
+class View : public Drawable,
+             public event::KeyboardEventBinder,
              public event::DrawableEventBinder
 {
   public:
 
-    View(const Position& position, const Size& size);
+    View(SDL_Texture* background, const Position& position, const Size& size);
     virtual ~View() = default;
 
-    void render();
+    virtual void draw();
 
     const SDL_Rect& destination() const { return m_destination; }
 

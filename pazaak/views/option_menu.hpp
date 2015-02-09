@@ -5,6 +5,13 @@
 
 namespace view {
 
+class OptionMenuSetting final : public graphics::Menu
+{
+  public:
+
+    OptionMenuSetting(const graphics::Size& size, std::shared_ptr<graphics::Text> title, std::shared_ptr<graphics::Drawable> content);
+};
+
 class OptionMenu final : public PazaakMenu
 {
   public:

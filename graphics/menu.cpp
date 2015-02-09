@@ -8,10 +8,8 @@ namespace graphics {
 
 const std::chrono::microseconds Menu::mimimum_keyboard_time_repeat {100000};
 
-Menu::Menu(const graphics::Size& size, const std::string& menu_info_file,
-           const std::vector<std::string>& texts, const std::string& text_info_file,
-           Display /*display*/, const std::string& background_info_file)
-  : View{ graphics::Position{0,0}, size }
+Menu::Menu(const graphics::Size& size, const std::string& menu_info_file, Display /*display*/, const std::string& background_info_file)
+  : View{ nullptr, graphics::Position{0,0}, size }
 {
   // Background
   if( !background_info_file.empty() )
@@ -26,27 +24,25 @@ Menu::Menu(const graphics::Size& size, const std::string& menu_info_file,
   m_menu = std::make_shared<graphics::VLayout>(menu_info, destination());
   addObject(m_menu);
 
-  // Menu items
-  utils::Configuration text_info {IMAGE_INFO_PATH, {text_info_file}};
-  for( const auto& text : texts )
-    m_items.emplace_back( std::make_shared<graphics::Text>(text, text_info ) );
-
-  // Add menu items to layout
-  for(auto& item : m_items)
-    m_menu->addObject( item );
-
-  // Compute menu item borders to speed up mouse move event (so we don't try to find over which item the mouse is if not inside those borders)
-  computeItemBorders();
-
-  // Set defaut focus
-  setFocus( selectedItem() );
-
   // Bind events
   KeyboardEventBinder::bind(SDLK_UP, std::bind(&Menu::keyboardSelectionUp, this));
   KeyboardEventBinder::bind(SDLK_DOWN, std::bind(&Menu::keyboardSelectionDown, this));
   KeyboardEventBinder::bind(SDLK_RETURN, std::bind(&Menu::chooseItem, this));
   KeyboardEventBinder::bind(SDL_MOUSEMOTION, std::bind(&Menu::mouseMove, this));
   KeyboardEventBinder::bind(SDL_MOUSEBUTTONUP, std::bind(&Menu::mouseClick, this));
+}
+
+void Menu::addMenuItem(const std::shared_ptr<graphics::Drawable> item)
+{
+  m_items.push_back( item );
+  m_menu->addObject( item );
+
+  // Select first item by default
+  if( m_items.size() == 1 )
+    setFocus(item, false);
+
+  // Compute menu item borders to speed up mouse move event (so we don't try to find over which item the mouse is if not inside those borders)
+  computeItemBorders();
 }
 
 void Menu::computeItemBorders()
@@ -139,7 +135,7 @@ void Menu::chooseItem()
 {
   // Play choose item sound if any
   if( !m_select_item_sound.empty() )
-    sounds::SoundsManager::playSound(m_select_item_sound);
+    Engine::sounds().playSound(m_select_item_sound);
 
   // Send event
   DrawableEventBinder::send( selectedItem() );
@@ -180,6 +176,9 @@ bool Menu::allowKeyboardInput()
 
 const std::shared_ptr<graphics::Drawable> Menu::selectedItem() const
 {
+  if( m_items.empty() )
+    return nullptr;
+
   return m_items[m_selected_item_pos];
 }
 
@@ -198,15 +197,15 @@ void Menu::setFocusToPosition(size_t item_offest)
   setFocus( m_items[item_offest] );
 }
 
-void Menu::setFocus(const std::shared_ptr<graphics::Drawable> newly_selected_item)
+void Menu::setFocus(const std::shared_ptr<graphics::Drawable> newly_selected_item, bool play_sound)
 {
   // Update selected item UI
   for( auto& item : m_items )
     item->setSelected( item == newly_selected_item );
 
   // Play sound
-  if( !m_change_selection_sound.empty() )
-    sounds::SoundsManager::playSound(m_change_selection_sound);
+  if( play_sound && !m_change_selection_sound.empty() )
+    Engine::sounds().playSound(m_change_selection_sound);
 }
 
 }
